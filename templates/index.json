@@ -12,6 +12,17 @@
     "hero": {
       "type": "hero-banner",
       "blocks": {
+        "slide_JEJEC6": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/air-conditioner-in-stylish-interior-of-light-living-room-with-sofa-generative-ai-photo.jpg",
+            "eyebrow": "New Arrival",
+            "heading": "Discover Our Latest Collection",
+            "subtext": "Explore premium quality products designed for you.",
+            "button_label": "Shop Now",
+            "button_link": ""
+          }
+        },
         "slide_8rqJHw": {
           "type": "slide",
           "settings": {
@@ -25,6 +36,7 @@
         }
       },
       "block_order": [
+        "slide_JEJEC6",
         "slide_8rqJHw"
       ],
       "settings": {
