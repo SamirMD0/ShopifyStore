@@ -35,6 +35,11 @@
 .btn-primary:hover:not(:disabled) {
   background-color: var(--color-accent-hover);
   color: #fff;
+  transform: scale(1.02);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .btn-secondary {
@@ -45,6 +50,11 @@
 
 .btn-secondary:hover:not(:disabled) {
   background-color: var(--color-border);
+  transform: scale(1.02);
+}
+
+.btn-secondary:active:not(:disabled) {
+  transform: scale(0.98);
 }
 
 .btn-outline {

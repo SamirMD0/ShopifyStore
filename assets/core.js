@@ -49,9 +49,53 @@ class DrawerManager {
   }
 
   closeAll() {
-    document.querySelectorAll('.drawer, .cart-drawer').forEach(d => d.classList.remove('is-open'));
+    document.querySelectorAll('.drawer, .cart-drawer, .mobile-drawer').forEach(d => d.classList.remove('is-open'));
     if (this.overlay) this.overlay.classList.remove('active');
     document.body.style.overflow = '';
+  }
+}
+
+class MobileMenu {
+  constructor() {
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    document.querySelectorAll('.mobile-nav-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', !expanded);
+        const subMenu = btn.nextElementSibling;
+        if (subMenu) {
+          subMenu.style.display = expanded ? 'none' : 'block';
+        }
+      });
+    });
+  }
+}
+
+class PageLoader {
+  constructor() {
+    this.loader = document.createElement('div');
+    this.loader.className = 'page-loading-bar';
+    document.body.appendChild(this.loader);
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a');
+      if (link && link.href && !link.href.startsWith('javascript:') && !link.href.startsWith('#') && link.target !== '_blank') {
+        const isInternal = link.host === window.location.host;
+        if (isInternal) {
+          this.loader.classList.add('is-loading');
+        }
+      }
+    });
+
+    window.addEventListener('pageshow', () => {
+      this.loader.classList.remove('is-loading');
+    });
   }
 }
 
@@ -186,7 +230,9 @@ class HeroCarousel {
 // Initialize components on load
 document.addEventListener('DOMContentLoaded', () => {
   window.drawerManager = new DrawerManager();
+  window.mobileMenu = new MobileMenu();
   window.quickAdd = new QuickAdd();
+  window.pageLoader = new PageLoader();
   
   const carousels = document.querySelectorAll('[data-hero-carousel]');
   carousels.forEach(c => new HeroCarousel(c));
