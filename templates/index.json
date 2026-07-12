@@ -21,6 +21,17 @@
     },
     "brands": {
       "type": "brand-showcase",
+      "blocks": {
+        "brand_LaCyNU": {
+          "type": "brand",
+          "settings": {
+            "title": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_LaCyNU"
+      ],
       "settings": {
         "title": "Trusted by top brands"
       }
