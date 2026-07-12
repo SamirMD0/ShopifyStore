@@ -215,6 +215,30 @@
           { "value": "center", "label": "Center" }
         ],
         "default": "center"
+      },
+      {
+        "type": "header",
+        "content": "Borders & Shadows"
+      },
+      {
+        "type": "range",
+        "id": "border_radius",
+        "label": "Global border radius",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "default": 8,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "grid_gap",
+        "label": "Grid spacing",
+        "min": 8,
+        "max": 64,
+        "step": 4,
+        "default": 24,
+        "unit": "px"
       }
     ]
   },

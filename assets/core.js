@@ -227,12 +227,186 @@ class HeroCarousel {
   }
 }
 
+class ScrollAnimator {
+  constructor() {
+    this.elements = document.querySelectorAll('[data-animate]');
+    if (this.elements.length === 0) return;
+    
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          this.observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -50px 0px',
+      threshold: 0.1
+    });
+
+    this.elements.forEach(el => this.observer.observe(el));
+  }
+}
+
+class WishlistManager {
+  constructor() {
+    this.storageKey = 'elecshop_wishlist';
+    this.wishlist = this.getWishlist();
+    this.bindEvents();
+    this.updateUI();
+  }
+
+  getWishlist() {
+    try {
+      const data = localStorage.getItem(this.storageKey);
+      return data ? JSON.parse(data) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  saveWishlist() {
+    try {
+      localStorage.setItem(this.storageKey, JSON.stringify(this.wishlist));
+    } catch (e) {}
+  }
+
+  toggle(handle) {
+    const index = this.wishlist.indexOf(handle);
+    if (index > -1) {
+      this.wishlist.splice(index, 1);
+    } else {
+      this.wishlist.push(handle);
+    }
+    this.saveWishlist();
+    this.updateUI();
+  }
+
+  bindEvents() {
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-wishlist-trigger]');
+      if (btn) {
+        e.preventDefault();
+        const handle = btn.getAttribute('data-wishlist-trigger');
+        this.toggle(handle);
+      }
+    });
+  }
+
+  updateUI() {
+    document.querySelectorAll('[data-wishlist-trigger]').forEach(btn => {
+      const handle = btn.getAttribute('data-wishlist-trigger');
+      const emptyIcon = btn.querySelector('.wishlist-icon-empty');
+      const filledIcon = btn.querySelector('.wishlist-icon-filled');
+      
+      if (this.wishlist.includes(handle)) {
+        if (emptyIcon) emptyIcon.classList.add('d-none');
+        if (filledIcon) filledIcon.classList.remove('d-none');
+      } else {
+        if (emptyIcon) emptyIcon.classList.remove('d-none');
+        if (filledIcon) filledIcon.classList.add('d-none');
+      }
+    });
+  }
+}
+
+class PredictiveSearch extends HTMLElement {
+  constructor() {
+    super();
+    this.input = this.querySelector('input[type="search"]');
+    this.predictiveSearchResults = this.querySelector('[data-predictive-search]');
+    this.setupEventListeners();
+  }
+
+  setupEventListeners() {
+    const form = this.querySelector('form.search-form');
+    form.addEventListener('submit', this.onFormSubmit.bind(this));
+
+    this.input.addEventListener('input', this.debounce((event) => {
+      this.onChange(event);
+    }, 300).bind(this));
+    
+    this.input.addEventListener('focus', this.onFocus.bind(this));
+    document.addEventListener('click', (event) => {
+      if (!this.contains(event.target)) this.close();
+    });
+  }
+
+  onChange() {
+    const searchTerm = this.input.value.trim();
+    if (!searchTerm.length) {
+      this.close();
+      return;
+    }
+    this.getSearchResults(searchTerm);
+  }
+
+  onFocus() {
+    const searchTerm = this.input.value.trim();
+    if (!searchTerm.length) return;
+    if (this.getAttribute('results') === 'true') {
+      this.open();
+    } else {
+      this.getSearchResults(searchTerm);
+    }
+  }
+
+  onFormSubmit(event) {
+    if (!this.input.value.length || this.input.value.length === 0) event.preventDefault();
+  }
+
+  getSearchResults(searchTerm) {
+    const queryKey = searchTerm.replace(" ", "-").toLowerCase();
+    
+    fetch(`/search/suggest?q=${searchTerm}&resources[type]=product&resources[limit]=4&section_id=predictive-search`)
+      .then((response) => {
+        if (!response.ok) {
+          var error = new Error(response.status);
+          this.close();
+          throw error;
+        }
+        return response.text();
+      })
+      .then((text) => {
+        const resultsMarkup = new DOMParser().parseFromString(text, 'text/html').querySelector('#shopify-section-predictive-search').innerHTML;
+        this.predictiveSearchResults.innerHTML = resultsMarkup;
+        this.setAttribute('results', true);
+        this.open();
+      })
+      .catch((error) => {
+        this.close();
+        throw error;
+      });
+  }
+
+  open() {
+    this.setAttribute('open', true);
+    this.input.setAttribute('aria-expanded', true);
+  }
+
+  close() {
+    this.removeAttribute('open');
+    this.input.setAttribute('aria-expanded', false);
+  }
+
+  debounce(fn, wait) {
+    let t;
+    return (...args) => {
+      clearTimeout(t);
+      t = setTimeout(() => fn.apply(this, args), wait);
+    };
+  }
+}
+customElements.define('predictive-search', PredictiveSearch);
+
 // Initialize components on load
 document.addEventListener('DOMContentLoaded', () => {
   window.drawerManager = new DrawerManager();
   window.mobileMenu = new MobileMenu();
   window.quickAdd = new QuickAdd();
   window.pageLoader = new PageLoader();
+  window.scrollAnimator = new ScrollAnimator();
+  window.wishlistManager = new WishlistManager();
   
   const carousels = document.querySelectorAll('[data-hero-carousel]');
   carousels.forEach(c => new HeroCarousel(c));

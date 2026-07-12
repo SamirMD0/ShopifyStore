@@ -43,6 +43,11 @@
       {%- endif -%}
     </a>
 
+    <button class="wishlist-btn absolute top-3 right-3 bg-white border-0 rounded-full d-flex align-items-center justify-content-center cursor-pointer shadow-sm z-10" style="width: 32px; height: 32px; color: var(--color-text-secondary);" data-wishlist-trigger="{{ product.handle }}">
+      <span class="wishlist-icon-empty">{% render 'icon-heart' %}</span>
+      <span class="wishlist-icon-filled d-none">{% render 'icon-heart-filled' %}</span>
+    </button>
+
     <div class="product-card-badges">
       {%- if product.available == false -%}
         <span class="badge badge-soldout">Sold Out</span>
