@@ -1,15 +1,15 @@
 <div class="collection-page container py-8">
-  <div class="d-flex flex-column lg:flex-row gap-8" style="@media(min-width: 1024px) { flex-direction: row; }">
+  <div class="d-flex flex-column lg-flex-row gap-8">
     
     <!-- Sidebar Filters -->
-    <div class="collection-sidebar flex-none w-full lg:w-1/4" style="@media(min-width: 1024px) { width: 25%; }">
+    <div class="collection-sidebar flex-none w-full lg-w-1-4">
       {%- if section.settings.enable_filtering -%}
         {% render 'filters', collection: collection %}
       {%- endif -%}
     </div>
 
     <!-- Main Content -->
-    <div class="collection-main flex-1 w-full lg:w-3/4" style="@media(min-width: 1024px) { width: 75%; }">
+    <div class="collection-main flex-1 w-full lg-w-3-4">
       
       <!-- Toolbar -->
       <div class="collection-toolbar d-flex justify-content-between align-items-center mb-6">
@@ -36,7 +36,7 @@
 
       <!-- Product Grid -->
       {% paginate collection.products by section.settings.products_per_page %}
-        <div class="product-grid d-grid gap-4 grid-cols-2 lg:grid-cols-3" style="@media(min-width: 1024px) { grid-template-columns: repeat({{ section.settings.grid_columns }}, 1fr) !important; }">
+        <div class="product-grid d-grid gap-4 custom-product-grid">
           {%- for product in collection.products -%}
             {% render 'product-card', product: product, collection: collection %}
           {%- else -%}
@@ -52,6 +52,13 @@
     </div>
   </div>
 </div>
+
+<style>
+  .custom-product-grid { grid-template-columns: repeat(2, 1fr); }
+  @media(min-width: 1024px) {
+    .custom-product-grid { grid-template-columns: repeat({{ section.settings.grid_columns }}, 1fr); }
+  }
+</style>
 
 {% schema %}
 {

@@ -33,7 +33,30 @@ class DrawerManager {
     // Escape key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') this.closeAll();
+      if (e.key === 'Tab' && this.activeDrawer) this.trapFocus(e);
     });
+  }
+
+  trapFocus(e) {
+    const focusableElements = this.activeDrawer.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusableElements.length === 0) return;
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === firstElement) {
+        lastElement.focus();
+        e.preventDefault();
+      }
+    } else {
+      if (document.activeElement === lastElement) {
+        firstElement.focus();
+        e.preventDefault();
+      }
+    }
   }
 
   open(id) {
@@ -46,12 +69,29 @@ class DrawerManager {
     drawer.classList.add('is-open');
     if (this.overlay) this.overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
+    
+    this.activeDrawer = drawer;
+    this.previouslyFocusedElement = document.activeElement;
+    
+    // Focus first element
+    setTimeout(() => {
+      const focusableElements = drawer.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusableElements.length) focusableElements[0].focus();
+    }, 100);
   }
 
   closeAll() {
     document.querySelectorAll('.drawer, .cart-drawer, .mobile-drawer').forEach(d => d.classList.remove('is-open'));
     if (this.overlay) this.overlay.classList.remove('active');
     document.body.style.overflow = '';
+    
+    this.activeDrawer = null;
+    if (this.previouslyFocusedElement) {
+      this.previouslyFocusedElement.focus();
+      this.previouslyFocusedElement = null;
+    }
   }
 }
 

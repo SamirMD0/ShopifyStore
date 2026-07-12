@@ -1,4 +1,4 @@
-<div class="featured-collections-section container py-8">
+<div class="featured-collections-section container py-16" data-animate="fade-in">
   <div class="section-header">
     <div class="section-title-wrapper">
       {%- if section.settings.eyebrow != blank -%}
@@ -13,7 +13,7 @@
     {%- endif -%}
   </div>
 
-  <div class="d-grid gap-4 grid-cols-2" style="@media(min-width: 768px) { grid-template-columns: repeat(3, 1fr) !important; } @media(min-width: 1024px) { grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr) !important; }">
+  <div class="d-grid gap-4 grid-cols-2 custom-featured-collections">
     {%- for block in section.blocks -%}
       {%- assign collection = collections[block.settings.collection] -%}
       <a href="{% if collection == empty %}#{% else %}{{ collection.url }}{% endif %}" class="collection-card" {{ block.shopify_attributes }}>
@@ -35,6 +35,11 @@
     {%- endfor -%}
   </div>
 </div>
+
+<style>
+  @media(min-width: 768px) { .custom-featured-collections { grid-template-columns: repeat(3, 1fr); } }
+  @media(min-width: 1024px) { .custom-featured-collections { grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr); } }
+</style>
 
 {% schema %}
 {
