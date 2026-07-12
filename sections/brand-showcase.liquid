@@ -6,12 +6,12 @@
       </div>
     {%- endif -%}
 
-    <div class="brand-carousel position-relative" data-marquee>
-      <div class="brand-track d-flex align-items-center gap-12" style="width: max-content;">
-        <!-- Double the blocks for smooth infinite scrolling -->
-        {%- for i in (1..2) -%}
+    <div class="brand-carousel position-relative overflow-hidden" data-marquee>
+      <div class="brand-track-wrapper d-flex">
+        <!-- Original Track -->
+        <div class="brand-track d-flex align-items-center gap-12 pr-12" style="width: max-content;">
           {%- for block in section.blocks -%}
-            <div class="brand-logo flex-none" style="width: 120px; opacity: 0.6; transition: opacity 0.3s; cursor: pointer;" {% if i == 1 %}{{ block.shopify_attributes }}{% endif %}>
+            <div class="brand-logo flex-none" style="width: 120px; opacity: 0.6; transition: opacity 0.3s; cursor: pointer;" {{ block.shopify_attributes }}>
               {%- if block.settings.image != blank -%}
                 <img src="{{ block.settings.image | image_url: width: 240 }}" alt="{{ block.settings.title | default: 'Brand logo' | escape }}" loading="lazy" style="max-height: 40px; width: auto; max-width: 100%; object-fit: contain;">
               {%- else -%}
@@ -19,12 +19,28 @@
               {%- endif -%}
             </div>
           {%- else -%}
-            <!-- Placeholders -->
             {%- for j in (1..6) -%}
               <div class="brand-logo flex-none text-xl font-bold text-center text-slate-300" style="width: 120px;">LOGO {{ j }}</div>
             {%- endfor -%}
           {%- endfor -%}
-        {%- endfor -%}
+        </div>
+        
+        <!-- Cloned Track for Infinite Scroll -->
+        <div class="brand-track d-flex align-items-center gap-12 pr-12" style="width: max-content;" aria-hidden="true">
+          {%- for block in section.blocks -%}
+            <div class="brand-logo flex-none" style="width: 120px; opacity: 0.6; transition: opacity 0.3s; cursor: pointer;">
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 240 }}" alt="{{ block.settings.title | default: 'Brand logo' | escape }}" loading="lazy" style="max-height: 40px; width: auto; max-width: 100%; object-fit: contain;">
+              {%- else -%}
+                <div class="text-xl font-bold text-center text-slate-300">{{ block.settings.title | default: 'BRAND' }}</div>
+              {%- endif -%}
+            </div>
+          {%- else -%}
+            {%- for j in (1..6) -%}
+              <div class="brand-logo flex-none text-xl font-bold text-center text-slate-300" style="width: 120px;">LOGO {{ j }}</div>
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
       </div>
     </div>
   </div>
@@ -33,11 +49,12 @@
 <style>
   .brand-logo:hover { opacity: 1 !important; }
   
-  .brand-track {
+  .brand-track-wrapper {
     animation: marquee 30s linear infinite;
+    width: max-content;
   }
   
-  .brand-carousel:hover .brand-track {
+  .brand-carousel:hover .brand-track-wrapper {
     animation-play-state: paused;
   }
   
