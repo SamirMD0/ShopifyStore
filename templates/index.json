@@ -22,15 +22,16 @@
     "brands": {
       "type": "brand-showcase",
       "blocks": {
-        "brand_LaCyNU": {
+        "brand_EMbYPR": {
           "type": "brand",
           "settings": {
+            "image": "shopify://shop_images/LG-Logo-700x394.png",
             "title": ""
           }
         }
       },
       "block_order": [
-        "brand_LaCyNU"
+        "brand_EMbYPR"
       ],
       "settings": {
         "title": "Trusted by top brands"
