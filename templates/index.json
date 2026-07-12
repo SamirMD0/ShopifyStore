@@ -40,7 +40,7 @@
       "settings": {
         "eyebrow": "New Arrivals",
         "title": "Featured Products",
-        "collection": "",
+        "collection": "frontpage",
         "product_limit": 8,
         "columns_desktop": 4,
         "show_view_all": true
