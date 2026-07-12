@@ -5,10 +5,10 @@
   </div>
 
   {%- if cart.item_count > 0 -%}
-    <form action="{{ routes.cart_url }}" method="post" id="cart-form" class="cart-form d-flex flex-column lg:flex-row gap-8">
+    <form action="{{ routes.cart_url }}" method="post" id="cart-form" class="cart-form d-flex flex-column lg-flex-row gap-8">
       
       <!-- Cart Items -->
-      <div class="cart-items-wrapper flex-1 w-full lg:w-2/3" style="@media(min-width: 1024px) { width: 66.666%; }">
+      <div class="cart-items-wrapper flex-1 w-full lg-w-2-3">
         <div class="cart-table-header hidden-mobile d-grid mb-4 text-xs font-bold text-secondary uppercase tracking-wider border-bottom pb-2" style="grid-template-columns: 3fr 1fr 1fr;">
           <div>Product</div>
           <div class="text-center">Quantity</div>
@@ -17,7 +17,7 @@
 
         <div class="cart-items d-flex flex-column gap-6">
           {%- for item in cart.items -%}
-            <div class="cart-item d-grid align-items-center gap-4 py-4 border-bottom" style="grid-template-columns: 1fr; @media(min-width: 768px) { grid-template-columns: 3fr 1fr 1fr; }">
+            <div class="cart-item d-grid align-items-center gap-4 py-4 border-bottom">
               
               <!-- Product Info -->
               <div class="cart-item-info d-flex align-items-center gap-4">
@@ -73,7 +73,7 @@
       </div>
 
       <!-- Cart Summary -->
-      <div class="cart-summary flex-none w-full lg:w-1/3" style="@media(min-width: 1024px) { width: 33.333%; }">
+      <div class="cart-summary flex-none w-full lg-w-1-3">
         <div class="cart-summary-box p-6 bg-slate-50 rounded-lg border">
           <h3 class="font-bold text-lg mb-4">Order Summary</h3>
           
@@ -148,9 +148,16 @@
   });
 </script>
 
+<style>
+  .cart-item { grid-template-columns: 1fr; }
+  @media(min-width: 768px) { 
+    .cart-item { grid-template-columns: 3fr 1fr 1fr; }
+  }
+</style>
+
 {% schema %}
 {
-  "name": "Main Cart",
+  "name": "Cart Page",
   "settings": []
 }
 {% endschema %}

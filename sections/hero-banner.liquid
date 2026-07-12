@@ -1,5 +1,5 @@
 <div class="hero-section container" data-hero-carousel>
-  <div class="d-grid gap-4" style="grid-template-columns: 1fr; {% if section.blocks.size > 2 and section.settings.show_side_promos %}@media(min-width: 1024px) { grid-template-columns: 3fr 1fr; }{% endif %}">
+  <div class="d-grid gap-4 hero-layout {% if section.blocks.size > 2 and section.settings.show_side_promos %}hero-layout-split{% endif %}">
     
     <!-- Main Carousel -->
     <div class="hero-carousel-container relative overflow-hidden rounded-lg">
@@ -47,7 +47,7 @@
         {%- assign slide_index = 0 -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'slide' -%}
-            <button class="dot bg-white border-0" data-index="{{ slide_index }}" style="width: 10px; height: 10px; border-radius: 50%; opacity: 0.5; cursor: pointer;"></button>
+            <button class="dot bg-white border-0 {% if slide_index == 0 %}active{% endif %}" data-index="{{ slide_index }}" style="width: 10px; height: 10px; border-radius: 50%; opacity: 0.5; cursor: pointer;"></button>
             {%- assign slide_index = slide_index | plus: 1 -%}
           {%- endif -%}
         {%- endfor -%}
@@ -56,7 +56,7 @@
 
     <!-- Side Promos -->
     {%- if section.settings.show_side_promos -%}
-      <div class="hero-side-promos hidden-desktop d-grid gap-4" style="grid-template-rows: 1fr 1fr; @media(min-width: 1024px) { display: grid !important; }">
+      <div class="hero-side-promos d-none lg-grid gap-4" style="grid-template-rows: 1fr 1fr;">
         {%- assign promo_count = 0 -%}
         {%- for block in section.blocks -%}
           {%- if block.type == 'promo' and promo_count < 2 -%}
@@ -86,6 +86,10 @@
 </div>
 
 <style>
+  .hero-layout { grid-template-columns: 1fr; }
+  @media(min-width: 1024px) {
+    .hero-layout-split { grid-template-columns: 3fr 1fr; }
+  }
   .carousel-dots .dot.active { opacity: 1; transform: scale(1.2); }
   .side-promo img { transition: transform 0.5s ease; }
   .side-promo:hover img { transform: scale(1.05); }

@@ -1,13 +1,13 @@
 <div class="product-page-section container py-12" data-section="{{ section.id }}">
-  <div class="d-flex flex-column lg:flex-row gap-12" style="@media(min-width: 1024px) { flex-direction: row; }">
+  <div class="d-flex flex-column lg-flex-row gap-12">
     
     <!-- Left Column: Media Gallery -->
-    <div class="product-media-column flex-1 w-full lg:w-1/2" style="@media(min-width: 1024px) { width: 50%; }">
+    <div class="product-media-column flex-1 w-full lg-w-1-2">
       {% render 'product-media-gallery', product: product %}
     </div>
 
     <!-- Right Column: Product Info (Sticky) -->
-    <div class="product-info-column flex-1 w-full lg:w-1/2" style="@media(min-width: 1024px) { width: 50%; }">
+    <div class="product-info-column flex-1 w-full lg-w-1-2">
       <div class="product-info-wrapper sticky top-0" style="top: 2rem;">
         
         {%- for block in section.blocks -%}
