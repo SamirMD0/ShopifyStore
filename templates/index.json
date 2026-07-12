@@ -11,6 +11,22 @@
   "sections": {
     "hero": {
       "type": "hero-banner",
+      "blocks": {
+        "slide_8rqJHw": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/llyhavfmy369httmk10fpca9di8n.png",
+            "eyebrow": "",
+            "heading": "",
+            "subtext": "Explore premium quality products designed for you.",
+            "button_label": "Shop Now",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_8rqJHw"
+      ],
       "settings": {
         "show_side_promos": true
       }
@@ -22,6 +38,41 @@
     "brands": {
       "type": "brand-showcase",
       "blocks": {
+        "brand_BrHBhD": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/redmi-logo-png_seeklogo-467257.png",
+            "title": ""
+          }
+        },
+        "brand_RdXaxH": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/apple-logo-png_seeklogo-272825.png",
+            "title": ""
+          }
+        },
+        "brand_bakBr7": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/tcl-logo-png_seeklogo-434831.png",
+            "title": "TCL"
+          }
+        },
+        "brand_Mq7zgh": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/sony-logo-png_seeklogo-129420.png",
+            "title": ""
+          }
+        },
+        "brand_NMAnUR": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/Featured_icons-13.avif",
+            "title": ""
+          }
+        },
         "brand_EMbYPR": {
           "type": "brand",
           "settings": {
@@ -31,8 +82,14 @@
         }
       },
       "block_order": [
+        "brand_BrHBhD",
+        "brand_RdXaxH",
+        "brand_bakBr7",
+        "brand_Mq7zgh",
+        "brand_NMAnUR",
         "brand_EMbYPR"
       ],
+      "custom_css": [],
       "settings": {
         "title": "Trusted by top brands"
       }
