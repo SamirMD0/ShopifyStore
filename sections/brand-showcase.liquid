@@ -11,7 +11,7 @@
         <!-- Double the blocks for smooth infinite scrolling -->
         {%- for i in (1..2) -%}
           {%- for block in section.blocks -%}
-            <div class="brand-logo flex-none" style="width: 120px; opacity: 0.6; transition: opacity 0.3s; cursor: pointer;" {{ block.shopify_attributes }}>
+            <div class="brand-logo flex-none" style="width: 120px; opacity: 0.6; transition: opacity 0.3s; cursor: pointer;" {% if i == 1 %}{{ block.shopify_attributes }}{% endif %}>
               {%- if block.settings.image != blank -%}
                 <img src="{{ block.settings.image | image_url: width: 240 }}" alt="{{ block.settings.title | default: 'Brand logo' | escape }}" loading="lazy" style="max-height: 40px; width: auto; max-width: 100%; object-fit: contain;">
               {%- else -%}
