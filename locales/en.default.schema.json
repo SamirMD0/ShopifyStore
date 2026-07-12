@@ -1,0 +1,137 @@
+{
+  "en": {
+    "theme": {
+      "name": "Shopify Store",
+      "description": "A clean and modern Shopify theme"
+    },
+    "sections": {
+      "announcement-bar": {
+        "name": "Announcement bar",
+        "settings": {
+          "text": {
+            "label": "Announcement text",
+            "info": "Text displayed in the announcement bar"
+          },
+          "link": {
+            "label": "Announcement link"
+          },
+          "background_color": {
+            "label": "Background color"
+          },
+          "text_color": {
+            "label": "Text color"
+          }
+        }
+      },
+      "header": {
+        "name": "Header",
+        "settings": {
+          "logo": {
+            "label": "Logo image"
+          },
+          "logo_width": {
+            "label": "Logo width"
+          },
+          "main_menu": {
+            "label": "Main menu"
+          }
+        }
+      },
+      "footer": {
+        "name": "Footer",
+        "settings": {
+          "copyright_text": {
+            "label": "Copyright text"
+          },
+          "show_social": {
+            "label": "Show social icons"
+          }
+        }
+      },
+      "hero-banner": {
+        "name": "Hero banner"
+      },
+      "featured-products": {
+        "name": "Featured products"
+      },
+      "featured-collections": {
+        "name": "Featured collections"
+      },
+      "product-grid": {
+        "name": "Product grid"
+      },
+      "collection-grid": {
+        "name": "Collection grid"
+      },
+      "newsletter": {
+        "name": "Newsletter"
+      },
+      "testimonials": {
+        "name": "Testimonials"
+      },
+      "faq": {
+        "name": "FAQ"
+      },
+      "contact": {
+        "name": "Contact form"
+      },
+      "rich-text": {
+        "name": "Rich text"
+      },
+      "image-banner": {
+        "name": "Image banner"
+      },
+      "video-banner": {
+        "name": "Video banner"
+      },
+      "cart-drawer": {
+        "name": "Cart drawer"
+      },
+      "recently-viewed": {
+        "name": "Recently viewed"
+      },
+      "recommended-products": {
+        "name": "Recommended products"
+      },
+      "related-products": {
+        "name": "Related products"
+      },
+      "blog": {
+        "name": "Blog"
+      },
+      "article": {
+        "name": "Article"
+      },
+      "page": {
+        "name": "Page"
+      },
+      "account": {
+        "name": "Account"
+      },
+      "addresses": {
+        "name": "Addresses"
+      },
+      "login": {
+        "name": "Login"
+      },
+      "register": {
+        "name": "Register"
+      },
+      "activate-account": {
+        "name": "Activate account"
+      },
+      "reset-password": {
+        "name": "Reset password"
+      },
+      "order": {
+        "name": "Order"
+      },
+      "404": {
+        "name": "404"
+      },
+      "search-form": {
+        "name": "Search form"
+      }
+    }
+  }
+}

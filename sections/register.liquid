@@ -1,0 +1,111 @@
+<div class="customer register container py-16 d-flex justify-content-center">
+  <div class="register-wrapper w-full max-w-md bg-white p-8 rounded-lg border" style="max-width: 450px;">
+    
+    <h1 class="text-2xl font-bold text-primary mb-6 text-center">
+      {{ 'customer.register.title' | t | default: "Create Account" }}
+    </h1>
+
+    <div class="register-form">
+      {%- form 'create_customer', novalidate: 'novalidate' -%}
+        
+        {%- if form.errors -%}
+          <div class="form-message form-message--error bg-error text-white p-3 rounded-sm mb-4 text-sm">
+            <h2 class="h3 form-message__title font-bold m-0" tabindex="-1" autofocus>
+              {{ 'templates.contact.form.error_heading' | t }}
+            </h2>
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="d-flex gap-4 mb-4">
+          <div class="field flex-1">
+            <label for="RegisterForm-FirstName" class="d-block text-sm font-medium text-secondary mb-1">
+              {{ 'customer.register.first_name' | t | default: "First name" }}
+            </label>
+            <input
+              type="text"
+              name="customer[first_name]"
+              id="RegisterForm-FirstName"
+              {% if form.first_name %}value="{{ form.first_name }}"{% endif %}
+              autocomplete="given-name"
+              class="input-field w-full"
+            >
+          </div>
+          
+          <div class="field flex-1">
+            <label for="RegisterForm-LastName" class="d-block text-sm font-medium text-secondary mb-1">
+              {{ 'customer.register.last_name' | t | default: "Last name" }}
+            </label>
+            <input
+              type="text"
+              name="customer[last_name]"
+              id="RegisterForm-LastName"
+              {% if form.last_name %}value="{{ form.last_name }}"{% endif %}
+              autocomplete="family-name"
+              class="input-field w-full"
+            >
+          </div>
+        </div>
+
+        <div class="field mb-4">
+          <label for="RegisterForm-email" class="d-block text-sm font-medium text-secondary mb-1">
+            {{ 'customer.register.email' | t | default: "Email" }}
+          </label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="RegisterForm-email"
+            {% if form.email %} value="{{ form.email }}"{% endif %}
+            spellcheck="false"
+            autocapitalize="off"
+            autocomplete="email"
+            aria-required="true"
+            {% if form.errors contains 'email' %}
+              aria-invalid="true"
+              aria-describedby="RegisterForm-email-error"
+            {% endif %}
+            class="input-field w-full"
+          >
+        </div>
+
+        <div class="field mb-6">
+          <label for="RegisterForm-password" class="d-block text-sm font-medium text-secondary mb-1">
+            {{ 'customer.register.password' | t | default: "Password" }}
+          </label>
+          <input
+            type="password"
+            name="customer[password]"
+            id="RegisterForm-password"
+            aria-required="true"
+            {% if form.errors contains 'password' %}
+              aria-invalid="true"
+              aria-describedby="RegisterForm-password-error"
+            {% endif %}
+            class="input-field w-full"
+          >
+        </div>
+
+        <button class="btn btn-primary w-full btn-lg font-bold mb-4">
+          {{ 'customer.register.submit' | t | default: "Create" }}
+        </button>
+
+        <a href="{{ routes.account_login_url }}" class="d-block text-center text-sm text-secondary hover:text-accent" style="text-decoration: underline;">
+          {{ 'customer.login_page.cancel' | t | default: "Return to Store" }}
+        </a>
+
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .bg-error { background-color: var(--color-error); }
+  .max-w-md { max-width: 28rem; }
+</style>
+
+{% schema %}
+{
+  "name": "Register",
+  "settings": []
+}
+{% endschema %}

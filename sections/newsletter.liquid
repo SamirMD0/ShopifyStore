@@ -1,0 +1,86 @@
+<div class="newsletter-section" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(14, 165, 233, 0.05));">
+  <div class="container text-center py-16">
+    <div class="newsletter-content mx-auto max-w-2xl px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">{{ section.settings.heading }}</h2>
+      <p class="text-secondary text-lg mb-8">{{ section.settings.subtext }}</p>
+      
+      {%- form 'customer', id: 'NewsletterSection', class: 'newsletter-form d-flex flex-column sm:flex-row gap-3 justify-content-center max-w-lg mx-auto' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        
+        {%- if form.posted_successfully? -%}
+          <div class="bg-success text-white p-4 rounded-md mb-4 w-full text-center" tabindex="-1" autofocus>
+            Thanks for subscribing! Check your email to confirm.
+          </div>
+        {%- endif -%}
+
+        <div class="d-flex w-full gap-2 relative">
+          <input
+            id="NewsletterForm--{{ section.id }}"
+            type="email"
+            name="contact[email]"
+            class="input-field flex-1 py-3 px-4 shadow-sm"
+            style="border-color: #e2e8f0;"
+            value="{{ form.email }}"
+            aria-required="true"
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            {% if form.errors %}
+              autofocus
+              aria-invalid="true"
+              aria-describedby="Newsletter-error--{{ section.id }}"
+            {% endif %}
+            placeholder="Enter your email address"
+            required
+          >
+          <button type="submit" class="btn btn-primary py-3 px-6 shadow-sm" name="commit" id="Subscribe">
+            Subscribe
+          </button>
+        </div>
+        
+        {%- if form.errors -%}
+          <small class="text-error w-full text-left mt-2 block" id="Newsletter-error--{{ section.id }}">
+            {{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}
+          </small>
+        {%- endif -%}
+      {%- endform -%}
+      
+      <p class="text-xs text-secondary mt-4 opacity-70">
+        By subscribing you agree to our <a href="/policies/terms-of-service" class="hover:text-primary underline">Terms & Conditions</a> and <a href="/policies/privacy-policy" class="hover:text-primary underline">Privacy Policy</a>.
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .newsletter-section { border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+  .max-w-2xl { max-width: 42rem; }
+  .max-w-lg { max-width: 32rem; }
+  .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
+  @media (min-width: 640px) { .sm\:flex-row { flex-direction: row; } }
+</style>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Join our newsletter"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

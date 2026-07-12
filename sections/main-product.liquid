@@ -1,0 +1,174 @@
+<div class="product-page-section container py-12" data-section="{{ section.id }}">
+  <div class="d-flex flex-column lg:flex-row gap-12" style="@media(min-width: 1024px) { flex-direction: row; }">
+    
+    <!-- Left Column: Media Gallery -->
+    <div class="product-media-column flex-1 w-full lg:w-1/2" style="@media(min-width: 1024px) { width: 50%; }">
+      {% render 'product-media-gallery', product: product %}
+    </div>
+
+    <!-- Right Column: Product Info (Sticky) -->
+    <div class="product-info-column flex-1 w-full lg:w-1/2" style="@media(min-width: 1024px) { width: 50%; }">
+      <div class="product-info-wrapper sticky top-0" style="top: 2rem;">
+        
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            
+            {%- when '@app' -%}
+              <div class="product-block-app mb-4" {{ block.shopify_attributes }}>
+                {% render block %}
+              </div>
+
+            {%- when 'vendor' -%}
+              <div class="product-vendor text-sm font-bold uppercase text-secondary mb-2 tracking-wider" {{ block.shopify_attributes }}>
+                {{ product.vendor }}
+              </div>
+
+            {%- when 'title' -%}
+              <h1 class="product-title text-3xl md:text-4xl font-bold text-primary mb-4" {{ block.shopify_attributes }}>
+                {{ product.title | escape }}
+              </h1>
+
+            {%- when 'price' -%}
+              <div class="product-price-block mb-6" id="price-{{ section.id }}" {{ block.shopify_attributes }}>
+                {% render 'price', product: product, variant: product.selected_or_first_available_variant %}
+              </div>
+
+            {%- when 'variant_picker' -%}
+              <div class="product-variant-picker-block mb-6" {{ block.shopify_attributes }}>
+                {% render 'variant-picker', product: product, section: section, product_form_id: 'product-form-' | append: section.id %}
+              </div>
+
+            {%- when 'buy_buttons' -%}
+              <div class="product-buy-buttons-block mb-8" {{ block.shopify_attributes }}>
+                {% render 'buy-buttons', product: product, block: block, section: section %}
+              </div>
+
+            {%- when 'description' -%}
+              {%- if product.description != blank -%}
+                <div class="product-description text-secondary text-sm mb-6" {{ block.shopify_attributes }}>
+                  {{ product.description }}
+                </div>
+              {%- endif -%}
+
+            {%- when 'accordion' -%}
+              {% render 'product-accordion', block: block, product: product %}
+              
+            {%- when 'share' -%}
+              <div class="product-share mt-6 d-flex align-items-center gap-3" {{ block.shopify_attributes }}>
+                <span class="text-sm font-medium text-secondary">Share:</span>
+                <a href="https://www.facebook.com/sharer.php?u={{ shop.url | append: product.url }}" target="_blank" aria-label="Share on Facebook" class="text-secondary hover:text-primary">
+                  {% render 'icon-facebook' %}
+                </a>
+                <a href="https://twitter.com/share?text={{ product.title | url_param_escape }}&url={{ shop.url | append: product.url }}" target="_blank" aria-label="Share on Twitter" class="text-secondary hover:text-primary">
+                  {% render 'icon-twitter' %}
+                </a>
+                <a href="https://pinterest.com/pin/create/button/?url={{ shop.url | append: product.url }}&media={{ product.featured_media | image_url: width: 1024 }}&description={{ product.title | url_param_escape }}" target="_blank" aria-label="Share on Pinterest" class="text-secondary hover:text-primary">
+                  {% render 'icon-pinterest' %}
+                </a>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<style>
+  .sticky { position: sticky; }
+  .tracking-wider { letter-spacing: 0.05em; }
+</style>
+
+{% schema %}
+{
+  "name": "Product Information",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "vendor",
+      "name": "Vendor",
+      "limit": 1
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant Picker",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "default": true,
+          "label": "Show dynamic checkout buttons"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_quantity_selector",
+          "default": true,
+          "label": "Show quantity selector"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "accordion",
+      "name": "Accordion content",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Product Description"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    },
+    {
+      "type": "share",
+      "name": "Share Buttons",
+      "limit": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Information",
+      "blocks": [
+        { "type": "vendor" },
+        { "type": "title" },
+        { "type": "price" },
+        { "type": "variant_picker" },
+        { "type": "buy_buttons" },
+        { "type": "description" },
+        { "type": "accordion", "settings": { "title": "Specifications" } },
+        { "type": "accordion", "settings": { "title": "Shipping & Returns" } },
+        { "type": "share" }
+      ]
+    }
+  ]
+}
+{% endschema %}

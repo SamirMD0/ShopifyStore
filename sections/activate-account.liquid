@@ -1,0 +1,39 @@
+<div class="activate-account">
+  <div class="activate-account__form">
+    {% form 'activate_customer_password' %}
+      <h1 class="activate-account__heading">{{ 'customer.activate_account.title' | t }}</h1>
+      <p>{{ 'customer.activate_account.subtext' | t }}</p>
+
+      {{ form.errors | default_errors }}
+
+      <div class="activate-account__field">
+        <label for="ActivateForm-password">{{ 'customer.activate_account.password' | t }}</label>
+        <input type="password" name="customer[password]" id="ActivateForm-password" autocomplete="new-password" required>
+      </div>
+
+      <div class="activate-account__field">
+        <label for="ActivateForm-password_confirmation">{{ 'customer.activate_account.password_confirm' | t }}</label>
+        <input type="password" name="customer[password_confirmation]" id="ActivateForm-password_confirmation" autocomplete="new-password" required>
+      </div>
+
+      <button type="submit" class="button" name="commit">
+        {{ 'customer.activate_account.submit' | t }}
+      </button>
+      <button type="submit" class="button button--secondary" name="decline">
+        {{ 'customer.activate_account.cancel' | t }}
+      </button>
+    {% endform %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Activate account",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Activate account"
+    }
+  ]
+}
+{% endschema %}

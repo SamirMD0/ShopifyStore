@@ -1,0 +1,42 @@
+<div class="related-products">
+  {% if section.settings.heading %}
+    <h2 class="related-products__heading">{{ section.settings.heading | escape }}</h2>
+  {% endif %}
+
+  <div class="related-products__items">
+    {% if product.metafields.related_products %}
+      {% for related_product_handle in product.metafields.related_products.value %}
+        {% assign related_product = all_products[related_product_handle] %}
+        {% render 'product-card', product: related_product %}
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Related products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Complete the look"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related products"
+    }
+  ]
+}
+{% endschema %}

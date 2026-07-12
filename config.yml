@@ -1,0 +1,14 @@
+development:
+  password: ""
+  theme_id: ""
+  store: ""
+  timeout: 60s
+  ignore:
+    - .gitignore
+    - node_modules
+    - .shopify
+    - assets/css
+    - assets/js
+    - assets/fonts
+    - assets/images
+    - assets/svg

@@ -1,0 +1,149 @@
+{%- assign product_form_id = 'product-form-' | append: section.id -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<div class="product-form-container" {{ block.shopify_attributes }}>
+  <product-form class="product-form">
+    <div class="product-form__error-message-wrapper d-none mb-4" role="alert" hidden>
+      <span class="product-form__error-message text-error text-sm font-medium"></span>
+    </div>
+
+    {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+      <input type="hidden" name="id" value="{{ current_variant.id }}" class="product-variant-id">
+      
+      <div class="product-form__buttons d-flex flex-column gap-3">
+        <div class="d-flex gap-3">
+          <!-- Quantity Selector -->
+          {%- if block.settings.show_quantity_selector -%}
+            <div class="quantity-wrapper flex-none" style="width: 120px;">
+              <quantity-input class="quantity border rounded-sm d-flex h-full w-full overflow-hidden" style="border-color: var(--color-border);">
+                <button class="quantity__button no-js-hidden flex-none w-10 d-flex align-items-center justify-content-center bg-transparent border-0 cursor-pointer hover:bg-slate-50 transition-colors" name="minus" type="button" aria-label="Decrease quantity">
+                  <span style="width: 14px; height: 14px;">{% render 'icon-minus' %}</span>
+                </button>
+                <input class="quantity__input flex-1 border-0 bg-transparent text-center font-medium m-0 p-0"
+                    type="number"
+                    name="quantity"
+                    id="Quantity-{{ section.id }}"
+                    min="1"
+                    value="1"
+                    form="{{ product_form_id }}"
+                  >
+                <button class="quantity__button no-js-hidden flex-none w-10 d-flex align-items-center justify-content-center bg-transparent border-0 cursor-pointer hover:bg-slate-50 transition-colors" name="plus" type="button" aria-label="Increase quantity">
+                  <span style="width: 14px; height: 14px;">{% render 'icon-plus' %}</span>
+                </button>
+              </quantity-input>
+            </div>
+          {%- endif -%}
+
+          <!-- Primary Add to Cart -->
+          <button
+            type="submit"
+            name="add"
+            class="product-form__submit btn btn-primary flex-1 btn-lg font-bold"
+            {% if current_variant.available == false %}disabled{% endif %}
+          >
+            <span>
+              {%- if current_variant.available -%}
+                Add to cart
+              {%- else -%}
+                Sold out
+              {%- endif -%}
+            </span>
+            <div class="loading-overlay__spinner hidden">
+              <!-- Loading spinner SVG -->
+            </div>
+          </button>
+        </div>
+
+        <!-- Dynamic Checkout Button -->
+        {%- if block.settings.show_dynamic_checkout -%}
+          <div class="payment-buttons w-full">
+            {{ form | payment_button }}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endform -%}
+  </product-form>
+</div>
+
+<style>
+  .payment-buttons .shopify-payment-button__button {
+    border-radius: var(--radius-sm);
+    min-height: 48px;
+    font-weight: var(--font-weight-bold);
+  }
+</style>
+
+<script>
+  if (!customElements.get('product-form')) {
+    customElements.define('product-form', class ProductForm extends HTMLElement {
+      constructor() {
+        super();
+        this.form = this.querySelector('form');
+        this.form.querySelector('[name=id]').disabled = false;
+        this.form.addEventListener('submit', this.onSubmitHandler.bind(this));
+        this.submitButton = this.querySelector('[type="submit"]');
+      }
+
+      onSubmitHandler(evt) {
+        evt.preventDefault();
+        if (this.submitButton.getAttribute('aria-disabled') === 'true') return;
+
+        this.handleErrorMessage();
+        this.submitButton.setAttribute('aria-disabled', true);
+        this.submitButton.classList.add('loading');
+
+        const config = {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/javascript'
+          }
+        };
+
+        const formData = new FormData(this.form);
+        config.body = formData;
+
+        fetch(`${routes.cart_add_url}`, config)
+          .then((response) => response.json())
+          .then((response) => {
+            if (response.status) {
+              this.handleErrorMessage(response.description);
+              return;
+            }
+            // Trigger cart update event (can be listened to by a cart drawer)
+            document.dispatchEvent(new CustomEvent('cart:updated'));
+            // If using drawer, open it
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer) {
+              drawer.classList.add('is-open');
+              const overlay = document.getElementById('overlay');
+              if (overlay) overlay.classList.add('active');
+            } else {
+              window.location = routes.cart_url;
+            }
+          })
+          .catch((e) => {
+            console.error(e);
+          })
+          .finally(() => {
+            this.submitButton.classList.remove('loading');
+            this.submitButton.removeAttribute('aria-disabled');
+          });
+      }
+
+      handleErrorMessage(errorMessage = false) {
+        this.errorMessageWrapper = this.errorMessageWrapper || this.querySelector('.product-form__error-message-wrapper');
+        if (!this.errorMessageWrapper) return;
+        this.errorMessage = this.errorMessage || this.errorMessageWrapper.querySelector('.product-form__error-message');
+
+        this.errorMessageWrapper.toggleAttribute('hidden', !errorMessage);
+        if (errorMessage) {
+          this.errorMessage.textContent = errorMessage;
+          this.errorMessageWrapper.classList.remove('d-none');
+        } else {
+          this.errorMessageWrapper.classList.add('d-none');
+        }
+      }
+    });
+  }
+</script>

@@ -1,0 +1,27 @@
+<div class="collection-card">
+  <a href="{{ collection.url }}" class="collection-card__link">
+    <div class="collection-card__image">
+      {% if collection.image %}
+        <img
+          src="{{ collection.image | image_url: width: 400 }}"
+          alt="{{ collection.image.alt | escape }}"
+          loading="lazy"
+          class="collection-card__image-img"
+        >
+      {% elsif collection.products.first %}
+        <img
+          src="{{ collection.products.first.featured_image | image_url: width: 400 }}"
+          alt="{{ collection.title | escape }}"
+          loading="lazy"
+          class="collection-card__image-img"
+        >
+      {% else %}
+        {{ 'collection-1' | placeholder_svg_tag: 'collection-card__placeholder' }}
+      {% endif %}
+    </div>
+    <div class="collection-card__info">
+      <h3 class="collection-card__title">{{ collection.title }}</h3>
+      <span class="collection-card__count">{{ collection.all_products_count }} {{ 'collections.general.items' | t }}</span>
+    </div>
+  </a>
+</div>

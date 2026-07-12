@@ -1,0 +1,87 @@
+<div class="product-media-gallery d-flex flex-column md:flex-row gap-4" style="@media(min-width: 768px) { flex-direction: row; }">
+  
+  <!-- Thumbnails (Vertical on desktop, horizontal on mobile) -->
+  <div class="product-thumbnails order-2 md:order-1 flex-none scroll-snap-x md:scroll-snap-y" style="@media(min-width: 768px) { width: 80px; order: 1; flex-direction: column; overflow-y: auto; max-height: 600px; scroll-snap-type: y mandatory; }">
+    {%- for media in product.media -%}
+      <button 
+        class="thumbnail-btn scroll-snap-item border rounded-sm overflow-hidden flex-none {% if forloop.first %}is-active border-accent{% endif %}" 
+        style="width: 80px; height: 80px; cursor: pointer; padding: 0; background: transparent; transition: border-color 0.2s;"
+        data-media-id="{{ media.id }}"
+        data-index="{{ forloop.index0 }}"
+      >
+        <img src="{{ media.preview_image | image_url: width: 160 }}" alt="{{ media.alt | escape }}" loading="lazy" class="w-full h-full object-cover">
+      </button>
+    {%- endfor -%}
+  </div>
+
+  <!-- Main Media -->
+  <div class="product-main-media order-1 md:order-2 flex-1 relative rounded-md overflow-hidden bg-slate-50" style="min-height: 400px; @media(min-width: 768px) { order: 2; }">
+    {%- for media in product.media -%}
+      <div 
+        class="main-media-item absolute inset-0 w-full h-full transition-opacity duration-300 {% if forloop.first %}opacity-100 z-10{% else %}opacity-0 z-0{% endif %}"
+        data-media-id="{{ media.id }}"
+        data-index="{{ forloop.index0 }}"
+      >
+        {%- case media.media_type -%}
+          {%- when 'image' -%}
+            <img src="{{ media | image_url: width: 1200 }}" 
+                 alt="{{ media.alt | escape }}" 
+                 class="w-full h-full object-contain cursor-zoom-in"
+                 data-zoom-src="{{ media | image_url: width: 2400 }}"
+                 loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            >
+          {%- when 'external_video' -%}
+            <div class="w-full h-full" style="padding-top: 100%; position: relative;">
+              {{ media | external_video_tag: class: "absolute inset-0 w-full h-full" }}
+            </div>
+          {%- when 'video' -%}
+            {{ media | video_tag: controls: true, class: "w-full h-full object-contain" }}
+          {%- when 'model' -%}
+            {{ media | model_viewer_tag: class: "w-full h-full" }}
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<style>
+  .bg-slate-50 { background-color: #f8fafc; }
+  .object-contain { object-fit: contain; }
+  .object-cover { object-fit: cover; }
+  .cursor-zoom-in { cursor: zoom-in; }
+  
+  .thumbnail-btn.is-active { border-color: var(--color-accent); border-width: 2px; }
+  .main-media-item.opacity-100 { opacity: 1; z-index: 10; pointer-events: auto; }
+  .main-media-item.opacity-0 { opacity: 0; z-index: 0; pointer-events: none; }
+  
+  .product-thumbnails::-webkit-scrollbar { display: none; }
+  .product-thumbnails { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const thumbnails = document.querySelectorAll('.thumbnail-btn');
+    const mainItems = document.querySelectorAll('.main-media-item');
+    
+    thumbnails.forEach(thumb => {
+      thumb.addEventListener('click', function() {
+        const id = this.getAttribute('data-media-id');
+        
+        // Update thumbnails
+        thumbnails.forEach(t => t.classList.remove('is-active', 'border-accent'));
+        this.classList.add('is-active', 'border-accent');
+        
+        // Update main media
+        mainItems.forEach(item => {
+          if (item.getAttribute('data-media-id') === id) {
+            item.classList.add('opacity-100', 'z-10');
+            item.classList.remove('opacity-0', 'z-0');
+          } else {
+            item.classList.remove('opacity-100', 'z-10');
+            item.classList.add('opacity-0', 'z-0');
+          }
+        });
+      });
+    });
+  });
+</script>

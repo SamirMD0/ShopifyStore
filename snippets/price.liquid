@@ -1,0 +1,31 @@
+{%- assign target = product | default: variant -%}
+{%- assign compare_at_price = target.compare_at_price -%}
+{%- assign price = target.price -%}
+{%- assign available = target.available | default: false -%}
+{%- assign money_price = price | money -%}
+
+{%- if target == product and product.price_varies -%}
+  {%- assign money_price = 'From ' | append: money_price -%}
+{%- endif -%}
+
+<div class="price {% if compare_at_price > price %}price--on-sale{% endif %} {% unless available %}price--sold-out{% endunless %} d-flex align-items-center gap-2">
+  <div class="price__regular">
+    <span class="visually-hidden">Regular price</span>
+    <span class="price-item price-item--regular font-medium {% if compare_at_price > price %}text-error{% else %}text-primary{% endif %}">
+      {{ money_price }}
+    </span>
+  </div>
+  
+  {%- if compare_at_price > price -%}
+    <div class="price__sale">
+      <span class="visually-hidden">Original price</span>
+      <span class="price-item price-item--sale text-secondary text-sm" style="text-decoration: line-through;">
+        {{ compare_at_price | money }}
+      </span>
+    </div>
+  {%- endif -%}
+  
+  {%- unless available -%}
+    <span class="badge badge-soldout ml-2">Sold out</span>
+  {%- endunless -%}
+</div>

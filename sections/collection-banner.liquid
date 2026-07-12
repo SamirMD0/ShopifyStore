@@ -1,0 +1,60 @@
+<div class="collection-banner position-relative overflow-hidden bg-slate-50 border-bottom" style="border-bottom: 1px solid var(--color-border);">
+  {%- if section.settings.show_collection_image and collection.image -%}
+    <img src="{{ collection.image | image_url: width: 1600 }}" class="absolute inset-0 w-full h-full object-cover z-0 opacity-20" alt="{{ collection.title | escape }}" loading="eager">
+    <div class="absolute inset-0 bg-white opacity-80 z-0"></div>
+  {%- endif -%}
+
+  <div class="container py-12 relative z-10 text-center" style="max-width: 800px;">
+    {%- if section.settings.show_breadcrumbs -%}
+      <div class="breadcrumbs d-flex justify-content-center align-items-center gap-2 text-sm text-secondary mb-4">
+        <a href="{{ routes.root_url }}" class="hover:text-primary">Home</a>
+        <span class="icon-wrap" style="width: 14px; height: 14px;">{% render 'icon-chevron-right' %}</span>
+        <span class="text-primary font-medium">{{ collection.title }}</span>
+      </div>
+    {%- endif -%}
+    
+    <h1 class="text-4xl font-bold text-primary mb-4">{{ collection.title }}</h1>
+    
+    {%- if section.settings.show_collection_description and collection.description != blank -%}
+      <div class="collection-description text-lg text-secondary">
+        {{ collection.description }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .bg-slate-50 { background-color: #f8fafc; }
+  .object-cover { object-fit: cover; }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "default": true,
+      "label": "Show collection image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "Show collection description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "default": true,
+      "label": "Show breadcrumbs"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Banner"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "blog": {
+      "type": "blog",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {}
+    }
+  },
+  "order": [
+    "blog",
+    "newsletter"
+  ]
+}

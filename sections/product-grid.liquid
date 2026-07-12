@@ -1,0 +1,97 @@
+<div class="collection-page container py-8">
+  <div class="d-flex flex-column lg:flex-row gap-8" style="@media(min-width: 1024px) { flex-direction: row; }">
+    
+    <!-- Sidebar Filters -->
+    <div class="collection-sidebar flex-none w-full lg:w-1/4" style="@media(min-width: 1024px) { width: 25%; }">
+      {%- if section.settings.enable_filtering -%}
+        {% render 'filters', collection: collection %}
+      {%- endif -%}
+    </div>
+
+    <!-- Main Content -->
+    <div class="collection-main flex-1 w-full lg:w-3/4" style="@media(min-width: 1024px) { width: 75%; }">
+      
+      <!-- Toolbar -->
+      <div class="collection-toolbar d-flex justify-content-between align-items-center mb-6">
+        <div class="collection-product-count text-sm text-secondary">
+          Showing {{ collection.products_count }} products
+        </div>
+        
+        <div class="collection-toolbar-actions d-flex align-items-center gap-4">
+          <!-- View Toggle -->
+          <div class="view-toggle d-flex align-items-center border rounded-sm overflow-hidden hidden-mobile">
+            <button class="view-btn is-active bg-slate-50 border-0 p-2 text-primary cursor-pointer" aria-label="Grid view">
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            </button>
+            <button class="view-btn bg-white border-0 border-left p-2 text-secondary hover:text-primary cursor-pointer" aria-label="List view">
+              <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+          </div>
+
+          {%- if section.settings.enable_sorting -%}
+            {% render 'sorting', collection: collection %}
+          {%- endif -%}
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      {% paginate collection.products by section.settings.products_per_page %}
+        <div class="product-grid d-grid gap-4 grid-cols-2 lg:grid-cols-3" style="@media(min-width: 1024px) { grid-template-columns: repeat({{ section.settings.grid_columns }}, 1fr) !important; }">
+          {%- for product in collection.products -%}
+            {% render 'product-card', product: product, collection: collection %}
+          {%- else -%}
+            <div class="w-full text-center py-12 text-secondary col-span-full">
+              {{ 'collections.empty' | t | default: "No products found." }}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {% render 'pagination', paginate: paginate %}
+      {% endpaginate %}
+      
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "grid_columns",
+      "label": "Desktop Columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable filtering",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Grid"
+    }
+  ]
+}
+{% endschema %}

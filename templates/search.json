@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "search-form": {
+      "type": "search-form",
+      "settings": {}
+    },
+    "product-grid": {
+      "type": "product-grid",
+      "settings": {}
+    }
+  },
+  "order": [
+    "search-form",
+    "product-grid"
+  ]
+}

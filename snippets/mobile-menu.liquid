@@ -1,0 +1,87 @@
+<div id="mobile-menu" class="mobile-drawer">
+  <div class="mobile-drawer-header d-flex justify-content-between align-items-center p-4">
+    <span class="font-bold text-lg">Menu</span>
+    <button class="drawer-close-btn header-icon-btn" aria-label="Close menu" data-drawer-close>
+      {% render 'icon-close' %}
+    </button>
+  </div>
+  
+  <div class="mobile-drawer-search px-4 pb-4">
+    {% render 'search-form' %}
+  </div>
+
+  <div class="mobile-drawer-content px-4">
+    <ul class="mobile-nav m-0 p-0" style="list-style: none;">
+      {%- for link in menu.links -%}
+        <li class="mobile-nav-item border-bottom py-3">
+          {%- if link.links != blank -%}
+            <button class="mobile-nav-toggle w-full d-flex justify-content-between align-items-center bg-transparent border-0 p-0 font-medium text-base text-primary" aria-expanded="false">
+              {{ link.title }}
+              <span class="toggle-icon transition-transform">
+                {% render 'icon-chevron-down' %}
+              </span>
+            </button>
+            <ul class="mobile-nav-sub m-0 p-0 pl-4 mt-2" style="list-style: none; display: none;">
+              {%- for childlink in link.links -%}
+                <li class="py-2">
+                  <a href="{{ childlink.url }}" class="text-secondary text-sm d-block" style="text-decoration: none;">
+                    {{ childlink.title }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- else -%}
+            <a href="{{ link.url }}" class="d-block font-medium text-base text-primary" style="text-decoration: none;">
+              {{ link.title }}
+            </a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+    
+    <div class="mobile-drawer-footer mt-8 pt-4 border-top">
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="d-flex align-items-center gap-2 font-medium text-primary py-2" style="text-decoration: none;">
+          <span style="width: 20px; height: 20px;">{% render 'icon-account' %}</span>
+          Account
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .mobile-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100vh;
+    background-color: var(--color-bg-secondary);
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .mobile-drawer.is-open {
+    transform: translateX(0);
+  }
+  
+  .mobile-nav-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .mobile-nav-toggle[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+  }
+  
+  .border-bottom { border-bottom: 1px solid var(--color-border); }
+  .border-top { border-top: 1px solid var(--color-border); }
+  .bg-transparent { background-color: transparent; }
+  .border-0 { border: 0; }
+  .transition-transform { transition: transform 0.2s ease; }
+</style>

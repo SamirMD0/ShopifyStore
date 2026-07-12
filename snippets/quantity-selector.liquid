@@ -1,0 +1,30 @@
+<div class="quantity-selector">
+  <button
+    class="quantity-selector__button quantity-selector__button--minus"
+    type="button"
+    data-quantity-minus
+    aria-label="{{ 'accessibility.decrease_quantity' | t }}"
+  >
+    {% render 'icon-minus' %}
+  </button>
+
+  <input
+    class="quantity-selector__input"
+    type="number"
+    name="quantity"
+    value="{{ item.quantity | default: 1 }}"
+    min="1"
+    {% if item.variant.inventory_management %}max="{{ item.variant.inventory_quantity }}"{% endif %}
+    data-quantity-input
+    aria-label="{{ 'accessibility.quantity' | t }}"
+  >
+
+  <button
+    class="quantity-selector__button quantity-selector__button--plus"
+    type="button"
+    data-quantity-plus
+    aria-label="{{ 'accessibility.increase_quantity' | t }}"
+  >
+    {% render 'icon-plus' %}
+  </button>
+</div>

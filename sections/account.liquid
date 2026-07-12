@@ -1,0 +1,91 @@
+<div class="customer account container py-16">
+  <div class="account-header d-flex justify-content-between align-items-center mb-12 border-bottom pb-4">
+    <h1 class="text-3xl font-bold text-primary m-0">{{ 'customer.account.title' | t | default: "Account" }}</h1>
+    <a href="{{ routes.account_logout_url }}" class="text-secondary hover:text-error font-medium" style="text-decoration: underline;">
+      <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" fill="none" viewBox="0 0 18 19" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 4px;">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M6 4.5a3 3 0 116 0 3 3 0 01-6 0zm3-4a4 4 0 100 8 4 4 0 000-8zm5.58 12.15c1.12.82 1.83 2.24 1.91 4.85H1.51c.08-2.6.79-4.03 1.9-4.85C4.66 11.75 6.5 11.5 9 11.5s4.35.26 5.58 1.15zM9 10.5c-2.5 0-4.65.24-6.17 1.35C1.27 12.98.5 14.93.5 18v.5h17V18c0-3.07-.77-5.02-2.33-6.15-1.52-1.1-3.67-1.35-6.17-1.35z" fill="currentColor"/>
+      </svg>
+      {{ 'customer.log_out' | t | default: "Log out" }}
+    </a>
+  </div>
+
+  <div class="d-flex flex-column lg:flex-row gap-12" style="@media(min-width: 1024px) { flex-direction: row; }">
+    
+    <!-- Order History -->
+    <div class="account-orders flex-1 lg:w-2/3" style="@media(min-width: 1024px) { width: 66.666%; }">
+      <h2 class="text-xl font-bold text-primary mb-6">{{ 'customer.orders.title' | t | default: "Order History" }}</h2>
+
+      {% paginate customer.orders by 20 %}
+        {%- if customer.orders.size > 0 -%}
+          <div class="orders-table-wrapper border rounded-md overflow-hidden bg-white">
+            <table class="w-full text-left" style="border-collapse: collapse;">
+              <thead class="bg-slate-50 border-bottom text-sm text-secondary uppercase tracking-wider">
+                <tr>
+                  <th class="p-4 font-medium">{{ 'customer.orders.order_number' | t | default: "Order" }}</th>
+                  <th class="p-4 font-medium">{{ 'customer.orders.date' | t | default: "Date" }}</th>
+                  <th class="p-4 font-medium">{{ 'customer.orders.payment_status' | t | default: "Payment Status" }}</th>
+                  <th class="p-4 font-medium">{{ 'customer.orders.fulfillment_status' | t | default: "Fulfillment Status" }}</th>
+                  <th class="p-4 font-medium text-right">{{ 'customer.orders.total' | t | default: "Total" }}</th>
+                </tr>
+              </thead>
+              <tbody class="text-sm">
+                {%- for order in customer.orders -%}
+                  <tr class="border-bottom last:border-0 hover:bg-slate-50 transition-colors">
+                    <td class="p-4">
+                      <a href="{{ order.customer_url }}" class="text-accent font-medium hover:underline" aria-label="Order number {{ order.name }}">
+                        {{ order.name }}
+                      </a>
+                    </td>
+                    <td class="p-4 text-secondary">{{ order.created_at | time_tag: format: 'date' }}</td>
+                    <td class="p-4"><span class="badge {% if order.financial_status_label == 'Paid' %}bg-primary text-white{% else %}bg-slate-100 text-secondary{% endif %}">{{ order.financial_status_label }}</span></td>
+                    <td class="p-4"><span class="badge {% if order.fulfillment_status_label == 'Fulfilled' %}bg-primary text-white{% else %}bg-slate-100 text-secondary{% endif %}">{{ order.fulfillment_status_label }}</span></td>
+                    <td class="p-4 text-right font-medium">{{ order.total_price | money }}</td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+          </div>
+        {%- else -%}
+          <div class="empty-state p-8 text-center bg-slate-50 rounded-md border text-secondary">
+            <p>{{ 'customer.orders.none' | t | default: "You haven't placed any orders yet." }}</p>
+          </div>
+        {%- endif -%}
+
+        {%- if paginate.pages > 1 -%}
+          {% render 'pagination', paginate: paginate %}
+        {%- endif -%}
+      {% endpaginate %}
+    </div>
+
+    <!-- Account Details -->
+    <div class="account-details flex-none lg:w-1/3" style="@media(min-width: 1024px) { width: 33.333%; }">
+      <h2 class="text-xl font-bold text-primary mb-6">{{ 'customer.account.details' | t | default: "Account Details" }}</h2>
+      
+      <div class="bg-white border rounded-md p-6 shadow-sm">
+        <p class="font-bold text-primary mb-2">{{ customer.name }}</p>
+        
+        <div class="text-secondary text-sm mb-6">
+          {{ customer.default_address | format_address }}
+        </div>
+
+        <a href="{{ routes.account_addresses_url }}" class="btn btn-outline w-full text-center text-sm">
+          {{ 'customer.account.view_addresses' | t | default: "View Addresses" }} ({{ customer.addresses_count }})
+        </a>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<style>
+  .tracking-wider { letter-spacing: 0.05em; }
+  .bg-slate-50 { background-color: #f8fafc; }
+  .bg-slate-100 { background-color: #f1f5f9; }
+</style>
+
+{% schema %}
+{
+  "name": "Account",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,94 @@
+<div class="brand-showcase-section py-8 overflow-hidden bg-white border-y" style="border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+  <div class="container">
+    {%- if section.settings.title != blank -%}
+      <div class="text-center mb-6 text-xs font-bold text-secondary uppercase" style="letter-spacing: 0.1em;">
+        {{ section.settings.title }}
+      </div>
+    {%- endif -%}
+
+    <div class="brand-carousel position-relative" data-marquee>
+      <div class="brand-track d-flex align-items-center gap-12" style="width: max-content;">
+        <!-- Double the blocks for smooth infinite scrolling -->
+        {%- for i in (1..2) -%}
+          {%- for block in section.blocks -%}
+            <div class="brand-logo flex-none" style="width: 120px; opacity: 0.6; transition: opacity 0.3s; cursor: pointer;" {{ block.shopify_attributes }}>
+              {%- if block.settings.image != blank -%}
+                <img src="{{ block.settings.image | image_url: width: 240 }}" alt="{{ block.settings.title | default: 'Brand logo' | escape }}" loading="lazy" style="max-height: 40px; width: auto; max-width: 100%; object-fit: contain;">
+              {%- else -%}
+                <div class="text-xl font-bold text-center text-slate-300">{{ block.settings.title | default: 'BRAND' }}</div>
+              {%- endif -%}
+            </div>
+          {%- else -%}
+            <!-- Placeholders -->
+            {%- for j in (1..6) -%}
+              <div class="brand-logo flex-none text-xl font-bold text-center text-slate-300" style="width: 120px;">LOGO {{ j }}</div>
+            {%- endfor -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .brand-logo:hover { opacity: 1 !important; }
+  
+  .brand-track {
+    animation: marquee 30s linear infinite;
+  }
+  
+  .brand-carousel:hover .brand-track {
+    animation-play-state: paused;
+  }
+  
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Brand Showcase",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Trusted by top brands"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Logo Image",
+          "info": "Upload a transparent PNG"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Brand Name (Fallback)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Showcase",
+      "blocks": [
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" },
+        { "type": "brand" }
+      ]
+    }
+  ]
+}
+{% endschema %}

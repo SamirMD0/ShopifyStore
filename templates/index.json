@@ -1,0 +1,83 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "show_side_promos": true
+      }
+    },
+    "features": {
+      "type": "service-features",
+      "settings": {}
+    },
+    "categories": {
+      "type": "featured-collections",
+      "settings": {
+        "eyebrow": "Browse Categories",
+        "title": "Shop by Category",
+        "columns_desktop": 4,
+        "show_product_count": true,
+        "show_view_all": true
+      }
+    },
+    "featured_products": {
+      "type": "featured-products",
+      "settings": {
+        "eyebrow": "New Arrivals",
+        "title": "Featured Products",
+        "product_limit": 8,
+        "columns_desktop": 4,
+        "show_view_all": true
+      }
+    },
+    "best_sellers": {
+      "type": "best-sellers",
+      "settings": {
+        "title": "Best Sellers",
+        "product_limit": 8,
+        "columns_desktop": 4
+      }
+    },
+    "brands": {
+      "type": "brand-showcase",
+      "settings": {
+        "title": "Trusted by top brands"
+      }
+    },
+    "promo": {
+      "type": "countdown-promo",
+      "settings": {
+        "eyebrow": "Limited Time Offer",
+        "title": "Flash Sale Event",
+        "text": "Get up to 50% off on selected items before the timer runs out!",
+        "end_date": "2026-12-31 23:59:59",
+        "button_label": "Shop Sale"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "eyebrow": "Testimonials",
+        "title": "What Our Customers Say"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "heading": "Join our newsletter",
+        "subtext": "Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "features",
+    "categories",
+    "featured_products",
+    "best_sellers",
+    "brands",
+    "promo",
+    "testimonials",
+    "newsletter"
+  ]
+}

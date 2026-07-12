@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {% if settings.favicon != blank %}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {% else %}
+    <link rel="icon" type="image/png" href="{{ 'favicon.png' | asset_url }}" sizes="32x32">
+  {% endif %}
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <title>
+    {{ page_title }}
+    {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+    {%- if current_page > 1 %} &ndash; Page {{ current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  </title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  {% render 'meta-tags' %}
+  {% render 'seo-helpers' %}
+
+  {{ content_for_header }}
+
+  <style>
+    :root {
+      --color-bg-primary: {{ settings.background_color | default: '#f8fafc' }};
+      --color-accent: {{ settings.primary_color | default: '#2563eb' }};
+      --color-text-primary: {{ settings.text_color | default: '#0f172a' }};
+      --font-family-base: 'Inter', sans-serif;
+      --font-size-base: {{ settings.base_font_size | default: 16 }}px;
+    }
+  </style>
+
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {{ 'core.css' | asset_url | stylesheet_tag }}
+  {{ 'components.css' | asset_url | stylesheet_tag }}
+  {{ 'sections.css' | asset_url | stylesheet_tag }}
+  {{ 'utilities.css' | asset_url | stylesheet_tag }}
+
+  {%- render 'social-meta-tags' -%}
+
+  <style>
+    .skip-to-content-link {
+      position: absolute;
+      z-index: 9999;
+      background: var(--color-accent);
+      color: #fff;
+      padding: var(--space-2) var(--space-4);
+      transform: translateY(-100%);
+      transition: transform var(--transition-fast);
+      border-radius: 0 0 var(--radius-md) 0;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .skip-to-content-link:focus {
+      transform: translateY(0);
+      outline: none;
+    }
+  </style>
+</head>
+
+<body class="template-{{ template.name }}">
+  <a class="skip-to-content-link" href="#MainContent">
+    {{ 'accessibility.skip_to_content' | t | default: "Skip to content" }}
+  </a>
+
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+
+  <main id="MainContent" class="main-content" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'footer' %}
+
+  <div id="overlay" class="overlay"></div>
+
+  {{ 'base.js' | asset_url | script_tag }}
+  {{ 'core.js' | asset_url | script_tag }}
+  {{ 'cart.js' | asset_url | script_tag }}
+
+  {% if settings.enable_cart_drawer %}
+    {% section 'cart-drawer' %}
+  {% endif %}
+</body>
+</html>

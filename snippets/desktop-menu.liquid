@@ -1,0 +1,80 @@
+<nav class="desktop-menu py-2">
+  <ul class="d-flex align-items-center gap-6 m-0 p-0 list-unstyled" style="list-style: none;">
+    {%- for link in menu.links -%}
+      <li class="menu-item position-relative {% if link.links != blank %}has-dropdown{% endif %}">
+        <a href="{{ link.url }}" class="menu-link d-flex align-items-center gap-1 font-medium text-sm text-primary py-2 {% if link.active %}active{% endif %}" style="text-decoration: none;">
+          {{ link.title }}
+          {%- if link.links != blank -%}
+            <span class="icon-wrap" style="width: 12px; height: 12px; display: inline-flex;">
+              {% render 'icon-chevron-down' %}
+            </span>
+          {%- endif -%}
+        </a>
+        
+        {%- if link.links != blank -%}
+          <div class="menu-dropdown glass-card absolute z-50">
+            <ul class="m-0 p-4" style="list-style: none; min-width: 200px;">
+              {%- for childlink in link.links -%}
+                <li class="dropdown-item mb-2 last:mb-0">
+                  <a href="{{ childlink.url }}" class="text-sm text-secondary hover:text-accent {% if childlink.active %}font-semibold text-primary{% endif %}" style="text-decoration: none; display: block; padding: 4px 0;">
+                    {{ childlink.title }}
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>
+
+<style>
+  .desktop-menu {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .menu-link {
+    position: relative;
+    transition: color 0.2s ease;
+  }
+  
+  .menu-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    transition: width 0.3s ease;
+  }
+  
+  .menu-link:hover {
+    color: var(--color-accent) !important;
+  }
+  
+  .menu-link:hover::after,
+  .menu-link.active::after {
+    width: 100%;
+  }
+
+  .menu-dropdown {
+    top: 100%;
+    left: -10px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
+  }
+
+  .has-dropdown:hover .menu-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .dropdown-item:last-child {
+    margin-bottom: 0;
+  }
+</style>

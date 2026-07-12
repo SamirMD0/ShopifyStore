@@ -1,0 +1,110 @@
+{%- if section.blocks.size > 0 -%}
+  <div class="announcement-bar bg-accent text-white py-2 relative" data-announcement-bar>
+    <div class="container text-center text-sm font-medium">
+      <div class="announcement-carousel">
+        {%- for block in section.blocks -%}
+          <div class="announcement-slide {% if forloop.first %}is-active{% endif %}" {{ block.shopify_attributes }}>
+            {%- if block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}" class="text-white hover:text-white" style="text-decoration: underline; text-underline-offset: 2px;">
+            {%- endif -%}
+            
+            {{ block.settings.text | escape }}
+            
+            {%- if block.settings.link != blank -%}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    
+    <button type="button" class="announcement-close absolute right-4 top-1/2" aria-label="Close announcement" data-announcement-close>
+      {% render 'icon-close' %}
+    </button>
+  </div>
+
+  <style>
+    .bg-accent { background-color: var(--color-accent); }
+    .announcement-bar { transition: transform 0.3s ease, opacity 0.3s ease; transform-origin: top; }
+    .announcement-bar.is-hidden { opacity: 0; transform: scaleY(0); padding: 0; height: 0; overflow: hidden; pointer-events: none; }
+    
+    .announcement-carousel { position: relative; height: 20px; overflow: hidden; }
+    .announcement-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease; display: flex; align-items: center; justify-content: center; }
+    .announcement-slide.is-active { opacity: 1; z-index: 1; }
+    
+    .announcement-close {
+      background: transparent; border: none; color: white; cursor: pointer;
+      opacity: 0.7; transition: opacity 0.2s; transform: translateY(-50%);
+      width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+    }
+    .announcement-close:hover { opacity: 1; }
+    .top-1\/2 { top: 50%; }
+    .right-4 { right: 1rem; }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const bar = document.querySelector('[data-announcement-bar]');
+      const closeBtn = document.querySelector('[data-announcement-close]');
+      const slides = document.querySelectorAll('.announcement-slide');
+      
+      if (!bar) return;
+      
+      // Handle close
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+          bar.classList.add('is-hidden');
+          sessionStorage.setItem('announcement_closed', 'true');
+        });
+      }
+      
+      if (sessionStorage.getItem('announcement_closed') === 'true') {
+        bar.style.display = 'none';
+        return;
+      }
+      
+      // Handle rotation if multiple slides
+      if (slides.length > 1) {
+        let currentIndex = 0;
+        setInterval(() => {
+          slides[currentIndex].classList.remove('is-active');
+          currentIndex = (currentIndex + 1) % slides.length;
+          slides[currentIndex].classList.add('is-active');
+        }, 4000);
+      }
+    });
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Welcome to our store",
+          "label": "Text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "announcement"
+      }
+    ]
+  }
+}
+{% endschema %}

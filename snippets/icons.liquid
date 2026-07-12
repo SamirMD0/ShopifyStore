@@ -1,0 +1,51 @@
+{%- comment -%}
+  Central icon rendering snippet.
+  Usage: {% render 'icons', icon: 'search' %}
+
+  Available icons: search, cart, hamburger, close, chevron-down, chevron-right, chevron-left,
+                   plus, minus, account, star, star-empty, star-half,
+                   facebook, twitter, instagram, youtube, tiktok, pinterest, rss
+{%- endcomment -%}
+
+{%- case icon -%}
+  {%- when 'search' -%}
+    {% render 'icon-search' %}
+  {%- when 'cart' -%}
+    {% render 'icon-cart' %}
+  {%- when 'hamburger' -%}
+    {% render 'icon-hamburger' %}
+  {%- when 'close' -%}
+    {% render 'icon-close' %}
+  {%- when 'chevron-down' -%}
+    {% render 'icon-chevron-down' %}
+  {%- when 'chevron-right' -%}
+    {% render 'icon-chevron-right' %}
+  {%- when 'chevron-left' -%}
+    {% render 'icon-chevron-left' %}
+  {%- when 'plus' -%}
+    {% render 'icon-plus' %}
+  {%- when 'minus' -%}
+    {% render 'icon-minus' %}
+  {%- when 'account' -%}
+    {% render 'icon-account' %}
+  {%- when 'star' -%}
+    {% render 'icon-star' %}
+  {%- when 'star-empty' -%}
+    {% render 'icon-star-empty' %}
+  {%- when 'star-half' -%}
+    {% render 'icon-star-half' %}
+  {%- when 'facebook' -%}
+    {% render 'icon-facebook' %}
+  {%- when 'twitter' -%}
+    {% render 'icon-twitter' %}
+  {%- when 'instagram' -%}
+    {% render 'icon-instagram' %}
+  {%- when 'youtube' -%}
+    {% render 'icon-youtube' %}
+  {%- when 'tiktok' -%}
+    {% render 'icon-tiktok' %}
+  {%- when 'pinterest' -%}
+    {% render 'icon-pinterest' %}
+  {%- when 'rss' -%}
+    {% render 'icon-rss' %}
+{%- endcase -%}

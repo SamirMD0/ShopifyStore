@@ -1,0 +1,78 @@
+<div class="service-features-section container">
+  <div class="service-features">
+    {%- for block in section.blocks -%}
+      <div class="feature-item" {{ block.shopify_attributes }}>
+        <div class="feature-icon">
+          <!-- Render a generic icon based on the title, or a custom one if possible. For simplicity, we use an SVG placeholder or an actual SVG. -->
+          {%- case block.settings.icon -%}
+            {%- when 'shipping' -%}
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            {%- when 'payment' -%}
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            {%- when 'support' -%}
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            {%- when 'return' -%}
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 15v-1a4 4 0 00-4-4H8m0 0l3 3m-3-3l3-3m9 14V5a2 2 0 00-2-2H6a2 2 0 00-2 2v16l4-2 4 2 4-2 4 2z"></path></svg>
+            {%- else -%}
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
+          {%- endcase -%}
+        </div>
+        <div class="feature-content">
+          <h4>{{ block.settings.title }}</h4>
+          <p>{{ block.settings.text }}</p>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Service Features",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "shipping", "label": "Shipping" },
+            { "value": "payment", "label": "Payment (Lock)" },
+            { "value": "support", "label": "Support (Lifebuoy)" },
+            { "value": "return", "label": "Return (Receipt)" },
+            { "value": "check", "label": "Checkmark" }
+          ],
+          "default": "shipping"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free Shipping"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Description",
+          "default": "Orders over $50"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Service Features",
+      "blocks": [
+        { "type": "feature", "settings": { "icon": "shipping", "title": "Free Shipping", "text": "Orders over $50" } },
+        { "type": "feature", "settings": { "icon": "payment", "title": "Secure Payment", "text": "100% secure payment" } },
+        { "type": "feature", "settings": { "icon": "return", "title": "Easy Returns", "text": "30 Day Return Policy" } },
+        { "type": "feature", "settings": { "icon": "support", "title": "24/7 Support", "text": "Dedicated support" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

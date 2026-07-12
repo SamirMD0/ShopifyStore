@@ -1,0 +1,88 @@
+<div class="header-section glass{% if section.settings.enable_sticky_header %} sticky{% endif %}">
+  <div class="container">
+    <div class="header-inner">
+      <!-- Mobile Menu Toggle -->
+      <button class="header-icon-btn hidden-desktop" aria-label="Open menu" data-drawer-trigger="mobile-menu">
+        {% render 'icon-hamburger' %}
+      </button>
+
+      <!-- Logo -->
+      <a href="{{ routes.root_url }}" class="header-logo text-2xl font-bold text-gradient">
+        {%- if section.settings.logo != blank -%}
+          <img src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}" 
+               alt="{{ shop.name }}" 
+               width="{{ section.settings.logo_width }}" 
+               height="auto" 
+               loading="lazy">
+        {%- else -%}
+          {{ shop.name }}
+        {%- endif -%}
+      </a>
+
+      <!-- Desktop Search -->
+      <div class="header-search hidden-mobile flex-1 mx-8 max-w-lg">
+        {% render 'search-form' %}
+      </div>
+
+      <!-- Icons -->
+      <div class="header-icons">
+        <button class="header-icon-btn hidden-desktop" aria-label="Search" data-drawer-trigger="mobile-search">
+          {% render 'icon-search' %}
+        </button>
+
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{{ routes.account_url }}" class="header-icon-btn" aria-label="Account">
+            {% render 'icon-account' %}
+          </a>
+        {%- endif -%}
+
+        <a href="{{ routes.cart_url }}" class="header-icon-btn" aria-label="Cart" {% if settings.enable_cart_drawer %}data-drawer-trigger="cart-drawer"{% endif %}>
+          {% render 'icon-cart' %}
+          <div class="cart-count-badge" data-cart-count>{{ cart.item_count }}</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <div class="header-nav hidden-mobile">
+      {% render 'desktop-menu', menu: linklists[section.settings.main_menu] %}
+    </div>
+  </div>
+</div>
+
+{% render 'mobile-menu', menu: linklists[section.settings.main_menu] %}
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "default": 150,
+      "unit": "px"
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "label": "Enable sticky header",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

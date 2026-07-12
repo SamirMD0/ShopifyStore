@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "order": {
+      "type": "order",
+      "settings": {}
+    }
+  },
+  "order": [
+    "order"
+  ]
+}

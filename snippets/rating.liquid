@@ -1,0 +1,15 @@
+<div class="rating" role="img" aria-label="{{ 'accessibility.star_reviews' | t: rating: rating | default: 0 }}">
+  {%- assign rating_value = rating | default: 0 -%}
+  {%- assign full_stars = rating_value | floor -%}
+  {%- assign has_half = rating_value - full_stars -%}
+
+  {%- for i in (1..5) -%}
+    {%- if i <= full_stars -%}
+      <span class="rating__star rating__star--full">{% render 'icon-star' %}</span>
+    {%- elsif i == full_stars and has_half > 0 -%}
+      <span class="rating__star rating__star--half">{% render 'icon-star-half' %}</span>
+    {%- else -%}
+      <span class="rating__star rating__star--empty">{% render 'icon-star-empty' %}</span>
+    {%- endif -%}
+  {%- endfor -%}
+</div>

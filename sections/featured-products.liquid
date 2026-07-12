@@ -1,0 +1,112 @@
+<div class="featured-products-section container py-8">
+  <div class="section-header">
+    <div class="section-title-wrapper">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+    </div>
+    {%- if section.settings.show_view_all and section.settings.collection != blank -%}
+      <div class="section-action">
+        <a href="{{ section.settings.collection.url }}" class="btn btn-outline btn-sm">View All</a>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="product-rail scroll-snap-x gap-4 pb-4">
+    {%- assign collection = section.settings.collection -%}
+    {%- if collection != blank and collection.products_count > 0 -%}
+      {%- for product in collection.products limit: section.settings.product_limit -%}
+        <div class="scroll-snap-item" style="width: 280px;">
+          {% render 'product-card', product: product, collection: collection %}
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..4) -%}
+        <div class="scroll-snap-item" style="width: 280px;">
+          <!-- Placeholder Product Card -->
+          <div class="product-card">
+            <div class="product-card-image-wrapper">
+              {{ 'product-' | append: i | placeholder_svg_tag: 'product-card-image bg-slate-200' }}
+            </div>
+            <div class="product-card-info">
+              <a href="#" class="product-card-title text-primary hover:text-accent">Example Product {{ i }}</a>
+              <div class="product-card-price">
+                <span class="product-card-price-regular">$19.99</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .product-rail { padding-bottom: var(--space-4); margin-bottom: calc(-1 * var(--space-4)); }
+  .product-rail::-webkit-scrollbar { display: none; }
+  .product-rail { -ms-overflow-style: none; scrollbar-width: none; }
+  
+  @media (min-width: 1024px) {
+    .product-rail {
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+      overflow-x: visible;
+    }
+    .scroll-snap-item { width: auto !important; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show 'View all' button"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products"
+    }
+  ]
+}
+{% endschema %}

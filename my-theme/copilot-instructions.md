@@ -1,0 +1,1 @@
+D:/User/Documents/PorfolioProjects/ShopifyStore/my-theme/AGENTS.md

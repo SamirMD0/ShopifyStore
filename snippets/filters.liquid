@@ -1,0 +1,95 @@
+<form id="CollectionFiltersForm" class="collection-filters">
+  <div class="filters-header d-flex justify-content-between align-items-center mb-4 pb-4 border-bottom">
+    <h3 class="font-bold text-lg m-0">Filters</h3>
+    <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="text-sm text-secondary hover:text-accent" style="text-decoration: underline;">Clear all</a>
+  </div>
+
+  <div class="filters-accordion">
+    {%- for filter in collection.filters -%}
+      <div class="filter-group border-bottom py-4">
+        <button type="button" class="filter-group-summary w-full d-flex justify-content-between align-items-center bg-transparent border-0 p-0 font-medium text-primary cursor-pointer" aria-expanded="true" data-filter-toggle>
+          {{ filter.label }}
+          <span class="icon-wrap transition-transform" style="transform: rotate(180deg);">
+            {% render 'icon-chevron-down' %}
+          </span>
+        </button>
+
+        <div class="filter-group-display mt-4">
+          {%- case filter.type -%}
+            {%- when 'list' -%}
+              <ul class="filter-list m-0 p-0" style="list-style: none;">
+                {%- for filter_value in filter.values -%}
+                  <li class="filter-item mb-2 last:mb-0">
+                    <label class="d-flex align-items-center gap-2 cursor-pointer text-sm text-secondary hover:text-primary">
+                      <input type="checkbox"
+                        name="{{ filter_value.param_name }}"
+                        value="{{ filter_value.value }}"
+                        {% if filter_value.active %}checked{% endif %}
+                        {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}
+                        class="filter-checkbox"
+                        onchange="document.getElementById('CollectionFiltersForm').submit();"
+                      >
+                      <span>{{ filter_value.label }}</span>
+                      <span class="text-xs opacity-60">({{ filter_value.count }})</span>
+                    </label>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            
+            {%- when 'price_range' -%}
+              <div class="filter-price d-flex align-items-center gap-2">
+                <div class="price-input d-flex align-items-center border px-2 py-1 rounded-sm w-full">
+                  <span class="text-secondary">{{ cart.currency.symbol }}</span>
+                  <input type="number"
+                    name="{{ filter.min_value.param_name }}"
+                    {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                    type="number"
+                    placeholder="0"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    class="border-0 bg-transparent w-full ml-1"
+                    style="outline: none;"
+                    onchange="document.getElementById('CollectionFiltersForm').submit();"
+                  >
+                </div>
+                <span class="text-secondary">-</span>
+                <div class="price-input d-flex align-items-center border px-2 py-1 rounded-sm w-full">
+                  <span class="text-secondary">{{ cart.currency.symbol }}</span>
+                  <input type="number"
+                    name="{{ filter.max_value.param_name }}"
+                    {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                    type="number"
+                    placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    class="border-0 bg-transparent w-full ml-1"
+                    style="outline: none;"
+                    onchange="document.getElementById('CollectionFiltersForm').submit();"
+                  >
+                </div>
+              </div>
+          {%- endcase -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</form>
+
+<style>
+  .filter-checkbox { accent-color: var(--color-accent); cursor: pointer; }
+  .filter-group-summary[aria-expanded="false"] .icon-wrap { transform: rotate(0deg) !important; }
+  .filter-group-summary[aria-expanded="false"] + .filter-group-display { display: none; }
+  .cursor-pointer { cursor: pointer; }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggles = document.querySelectorAll('[data-filter-toggle]');
+    toggles.forEach(toggle => {
+      toggle.addEventListener('click', function() {
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', !expanded);
+      });
+    });
+  });
+</script>

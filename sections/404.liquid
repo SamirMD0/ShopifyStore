@@ -1,0 +1,21 @@
+<div class="page-404">
+  <div class="page-404__content">
+    <h1 class="page-404__heading">404</h1>
+    <p class="page-404__text">{{ 'general.404.title' | t }}</p>
+    <a href="{{ routes.root_url }}" class="button page-404__button">
+      {{ 'general.404.back' | t }}
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "404",
+  "settings": [],
+  "presets": [
+    {
+      "name": "404"
+    }
+  ]
+}
+{% endschema %}

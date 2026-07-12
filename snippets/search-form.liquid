@@ -1,0 +1,48 @@
+<predictive-search class="search-modal__form" data-loading-text="Loading...">
+  <form action="{{ routes.search_url }}" method="get" role="search" class="search-form relative d-flex align-items-center">
+    <input type="hidden" name="options[prefix]" value="last">
+    
+    <div class="search-input-wrapper w-full relative">
+      <span class="search-icon absolute top-1/2 left-3" style="transform: translateY(-50%); color: var(--color-text-secondary); width: 18px; height: 18px;">
+        {% render 'icon-search' %}
+      </span>
+      
+      <input
+        class="input-field search-input"
+        id="Search-In-Template"
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="Search for products..."
+        role="combobox"
+        aria-expanded="false"
+        aria-owns="predictive-search-results"
+        aria-controls="predictive-search-results"
+        aria-haspopup="listbox"
+        aria-autocomplete="list"
+        autocorrect="off"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        style="padding-left: 2.5rem; padding-right: 2.5rem; border-radius: var(--radius-full); background-color: #f1f5f9;"
+      >
+      
+      <button type="reset" class="search-reset absolute top-1/2 right-3 d-none" aria-label="Clear search" style="transform: translateY(-50%); background: transparent; border: none; color: var(--color-text-secondary); cursor: pointer; width: 18px; height: 18px; padding: 0;">
+        {% render 'icon-close' %}
+      </button>
+    </div>
+
+    <!-- The predictive search dropdown snippet will be rendered here via JS if predictive search is enabled -->
+    <div class="predictive-search-wrapper absolute w-full z-50" style="top: calc(100% + 8px); left: 0;" tabindex="-1" data-predictive-search>
+      {%- render 'predictive-search' -%}
+    </div>
+  </form>
+</predictive-search>
+
+<style>
+  .search-form { width: 100%; }
+  .search-input:focus { background-color: var(--color-bg-secondary); box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2); }
+  .search-input:not(:placeholder-shown) ~ .search-reset { display: block !important; }
+  .predictive-search-wrapper { display: none; }
+  predictive-search[open] .predictive-search-wrapper { display: block; }
+</style>

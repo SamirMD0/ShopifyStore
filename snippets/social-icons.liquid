@@ -1,0 +1,49 @@
+<ul class="social-icons">
+  {%- if settings.social_facebook_link != blank -%}
+    <li class="social-icons__item">
+      <a href="{{ settings.social_facebook_link }}" class="social-icons__link" target="_blank" rel="noopener" aria-label="{{ 'accessibility.social_facebook' | t }}">
+        {% render 'icon-facebook' %}
+      </a>
+    </li>
+  {%- endif -%}
+
+  {%- if settings.social_twitter_link != blank -%}
+    <li class="social-icons__item">
+      <a href="{{ settings.social_twitter_link }}" class="social-icons__link" target="_blank" rel="noopener" aria-label="{{ 'accessibility.social_twitter' | t }}">
+        {% render 'icon-twitter' %}
+      </a>
+    </li>
+  {%- endif -%}
+
+  {%- if settings.social_instagram_link != blank -%}
+    <li class="social-icons__item">
+      <a href="{{ settings.social_instagram_link }}" class="social-icons__link" target="_blank" rel="noopener" aria-label="{{ 'accessibility.social_instagram' | t }}">
+        {% render 'icon-instagram' %}
+      </a>
+    </li>
+  {%- endif -%}
+
+  {%- if settings.social_youtube_link != blank -%}
+    <li class="social-icons__item">
+      <a href="{{ settings.social_youtube_link }}" class="social-icons__link" target="_blank" rel="noopener" aria-label="{{ 'accessibility.social_youtube' | t }}">
+        {% render 'icon-youtube' %}
+      </a>
+    </li>
+  {%- endif -%}
+
+  {%- if settings.social_tiktok_link != blank -%}
+    <li class="social-icons__item">
+      <a href="{{ settings.social_tiktok_link }}" class="social-icons__link" target="_blank" rel="noopener" aria-label="{{ 'accessibility.social_tiktok' | t }}">
+        {% render 'icon-tiktok' %}
+      </a>
+    </li>
+  {%- endif -%}
+
+  {%- if settings.social_pinterest_link != blank -%}
+    <li class="social-icons__item">
+      <a href="{{ settings.social_pinterest_link }}" class="social-icons__link" target="_blank" rel="noopener" aria-label="{{ 'accessibility.social_pinterest' | t }}">
+        {% render 'icon-pinterest' %}
+      </a>
+    </li>
+  {%- endif -%}
+</ul>

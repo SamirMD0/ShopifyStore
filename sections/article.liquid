@@ -1,0 +1,86 @@
+<article class="article-page container py-16" style="max-width: 800px;">
+  <header class="article-header text-center mb-12">
+    <div class="text-xs font-bold text-secondary uppercase tracking-wider mb-4">
+      {{ article.published_at | time_tag: format: 'date' }}
+    </div>
+    
+    <h1 class="text-4xl md:text-5xl font-bold text-primary mb-6" style="line-height: 1.2;">
+      {{ article.title }}
+    </h1>
+
+    {%- if article.author -%}
+      <div class="text-sm font-medium text-secondary">
+        By {{ article.author }}
+      </div>
+    {%- endif -%}
+  </header>
+
+  {%- if article.image -%}
+    <div class="article-hero-image mb-12 rounded-lg overflow-hidden aspect-video">
+      <img src="{{ article.image | image_url: width: 1200 }}" alt="{{ article.image.alt | escape }}" class="w-full h-full object-cover" loading="eager">
+    </div>
+  {%- endif -%}
+
+  <div class="article-content text-primary" style="line-height: 1.8; font-size: 1.125rem;">
+    {{ article.content }}
+  </div>
+
+  <div class="article-footer mt-12 pt-8 border-top text-center">
+    <a href="{{ blog.url }}" class="btn btn-outline">
+      Back to {{ blog.title }}
+    </a>
+  </div>
+</article>
+
+<style>
+  .aspect-video { aspect-ratio: 16 / 9; }
+  .object-cover { object-fit: cover; }
+  .border-top { border-top: 1px solid var(--color-border); }
+  
+  /* Article Typography Polish */
+  .article-content h2,
+  .article-content h3,
+  .article-content h4 {
+    color: var(--color-primary);
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .article-content h2 { font-size: 2rem; }
+  .article-content h3 { font-size: 1.5rem; }
+  
+  .article-content p {
+    margin-bottom: 1.5rem;
+    color: var(--color-text-primary);
+  }
+  
+  .article-content a {
+    color: var(--color-accent);
+    text-decoration: underline;
+  }
+  
+  .article-content a:hover {
+    color: var(--color-primary);
+  }
+  
+  .article-content img {
+    border-radius: var(--radius-md);
+    margin: 2rem 0;
+  }
+  
+  .article-content blockquote {
+    border-left: 4px solid var(--color-accent);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--color-text-secondary);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": []
+}
+{% endschema %}

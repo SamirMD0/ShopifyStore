@@ -1,0 +1,139 @@
+<div class="container py-8">
+  <div class="countdown-promo position-relative overflow-hidden" style="{% if section.settings.bg_color != blank %}background: {{ section.settings.bg_color }};{% endif %}">
+    
+    {%- if section.settings.bg_image != blank -%}
+      <img src="{{ section.settings.bg_image | image_url: width: 1200 }}" class="absolute inset-0 w-full h-full object-cover z-0 opacity-20" alt="" loading="lazy">
+    {%- endif -%}
+
+    <div class="promo-content relative z-10">
+      <div class="text-xs font-bold uppercase mb-2" style="letter-spacing: 0.1em; opacity: 0.9;">{{ section.settings.eyebrow }}</div>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color: white;">{{ section.settings.title }}</h2>
+      <p class="mb-6 opacity-90 max-w-md">{{ section.settings.text }}</p>
+      
+      {%- if section.settings.button_link != blank -%}
+        <a href="{{ section.settings.button_link }}" class="btn bg-white text-accent hover:bg-slate-50 font-bold">
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+    
+    <div class="promo-timer relative z-10" data-countdown="{{ section.settings.end_date }}">
+      <div class="timer-blocks">
+        <div class="timer-block">
+          <span class="timer-value" data-days>00</span>
+          <span class="timer-label">Days</span>
+        </div>
+        <div class="timer-block">
+          <span class="timer-value" data-hours>00</span>
+          <span class="timer-label">Hours</span>
+        </div>
+        <div class="timer-block">
+          <span class="timer-value" data-minutes>00</span>
+          <span class="timer-label">Mins</span>
+        </div>
+        <div class="timer-block">
+          <span class="timer-value" data-seconds>00</span>
+          <span class="timer-label">Secs</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const countdownContainers = document.querySelectorAll('[data-countdown]');
+    
+    countdownContainers.forEach(container => {
+      const targetDateStr = container.getAttribute('data-countdown');
+      if (!targetDateStr) return;
+      
+      const targetDate = new Date(targetDateStr).getTime();
+      
+      const daysEl = container.querySelector('[data-days]');
+      const hoursEl = container.querySelector('[data-hours]');
+      const minutesEl = container.querySelector('[data-minutes]');
+      const secondsEl = container.querySelector('[data-seconds]');
+      
+      const interval = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+        
+        if (distance < 0) {
+          clearInterval(interval);
+          return;
+        }
+        
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        if (daysEl) daysEl.innerText = days.toString().padStart(2, '0');
+        if (hoursEl) hoursEl.innerText = hours.toString().padStart(2, '0');
+        if (minutesEl) minutesEl.innerText = minutes.toString().padStart(2, '0');
+        if (secondsEl) secondsEl.innerText = seconds.toString().padStart(2, '0');
+      }, 1000);
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Countdown Promo",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Limited Time Offer"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Flash Sale Event"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Get up to 50% off on selected items before the timer runs out!"
+    },
+    {
+      "type": "color_background",
+      "id": "bg_color",
+      "label": "Background Gradient",
+      "default": "linear-gradient(135deg, #2563eb, #0ea5e9)"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "End Date",
+      "info": "Format: YYYY-MM-DD HH:MM:SS (e.g. 2026-12-31 23:59:59)",
+      "default": "2026-12-31 23:59:59"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Sale"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Countdown Promo"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,86 @@
+<div class="customer login container py-16 d-flex justify-content-center">
+  <div class="login-wrapper w-full max-w-md bg-white p-8 rounded-lg border" style="max-width: 450px;">
+    
+    <h1 id="login" class="text-2xl font-bold text-primary mb-6 text-center">
+      {{ 'customer.login_page.title' | t | default: "Login" }}
+    </h1>
+
+    <div class="login-form">
+      {%- form 'customer_login', novalidate: 'novalidate' -%}
+        
+        {%- if form.errors -%}
+          <div class="form-message form-message--error bg-error text-white p-3 rounded-sm mb-4 text-sm">
+            <h2 class="h3 form-message__title font-bold m-0" tabindex="-1" autofocus>
+              {{ 'templates.contact.form.error_heading' | t }}
+            </h2>
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <div class="field mb-4">
+          <label for="CustomerEmail" class="d-block text-sm font-medium text-secondary mb-1">
+            {{ 'customer.login_page.email' | t | default: "Email" }}
+          </label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="CustomerEmail"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            {% if form.errors contains 'form' %}
+              aria-invalid="true"
+            {% endif %}
+            placeholder="{{ 'customer.login_page.email' | t | default: 'Email' }}"
+            class="input-field w-full"
+          >
+        </div>
+
+        {%- if form.password_needed -%}
+          <div class="field mb-2">
+            <label for="CustomerPassword" class="d-block text-sm font-medium text-secondary mb-1">
+              {{ 'customer.login_page.password' | t | default: "Password" }}
+            </label>
+            <input
+              type="password"
+              value=""
+              name="customer[password]"
+              id="CustomerPassword"
+              autocomplete="current-password"
+              {% if form.errors contains 'form' %}
+                aria-invalid="true"
+              {% endif %}
+              placeholder="{{ 'customer.login_page.password' | t | default: 'Password' }}"
+              class="input-field w-full"
+            >
+          </div>
+
+          <a href="#recover" class="text-sm text-secondary hover:text-accent d-block mb-6" style="text-decoration: underline;">
+            {{ 'customer.login_page.forgot_password' | t | default: "Forgot your password?" }}
+          </a>
+        {%- endif -%}
+
+        <button class="btn btn-primary w-full btn-lg font-bold mb-4">
+          {{ 'customer.login_page.sign_in' | t | default: "Sign in" }}
+        </button>
+
+        <a href="{{ routes.account_register_url }}" class="btn btn-outline w-full text-center">
+          {{ 'customer.login_page.create_account' | t | default: "Create account" }}
+        </a>
+
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .bg-error { background-color: var(--color-error); }
+  .max-w-md { max-width: 28rem; }
+</style>
+
+{% schema %}
+{
+  "name": "Login",
+  "settings": []
+}
+{% endschema %}

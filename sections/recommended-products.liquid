@@ -1,0 +1,36 @@
+<div class="recommended-products" data-section-id="{{ section.id }}" data-section-type="recommended-products" data-product-id="{{ product.id }}" data-limit="{{ section.settings.products_to_show }}">
+  {% if section.settings.heading %}
+    <h2 class="recommended-products__heading">{{ section.settings.heading | escape }}</h2>
+  {% endif %}
+
+  <div class="recommended-products__items" data-recommended-products>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Recommended products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recommended products"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,45 @@
+{%- if paginate.parts.size > 0 -%}
+  <div class="pagination-wrapper mt-12 d-flex justify-content-center">
+    <nav class="pagination" role="navigation" aria-label="Pagination">
+      <ul class="pagination-list d-flex align-items-center gap-2 m-0 p-0" style="list-style: none;">
+        
+        {%- if paginate.previous -%}
+          <li>
+            <a href="{{ paginate.previous.url }}" class="pagination-item pagination-item--prev d-flex align-items-center justify-content-center bg-white border hover:bg-slate-50 transition-colors" aria-label="Previous page" style="width: 40px; height: 40px; border-radius: var(--radius-md);">
+              <span style="width: 20px; height: 20px;">{% render 'icon-chevron-left' %}</span>
+            </a>
+          </li>
+        {%- endif -%}
+
+        {%- for part in paginate.parts -%}
+          <li>
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}" class="pagination-item d-flex align-items-center justify-content-center bg-white border hover:bg-slate-50 transition-colors font-medium text-sm text-secondary hover:text-primary" aria-label="Page {{ part.title }}" style="width: 40px; height: 40px; border-radius: var(--radius-md); text-decoration: none;">
+                {{ part.title }}
+              </a>
+            {%- else -%}
+              {%- if part.title == paginate.current_page -%}
+                <span class="pagination-item pagination-item--current d-flex align-items-center justify-content-center bg-primary text-white font-bold text-sm" aria-label="Page {{ part.title }}" aria-current="page" style="width: 40px; height: 40px; border-radius: var(--radius-md);">
+                  {{ part.title }}
+                </span>
+              {%- else -%}
+                <span class="pagination-item pagination-item--dots d-flex align-items-center justify-content-center text-secondary" style="width: 40px; height: 40px;">
+                  {{ part.title }}
+                </span>
+              {%- endif -%}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+
+        {%- if paginate.next -%}
+          <li>
+            <a href="{{ paginate.next.url }}" class="pagination-item pagination-item--next d-flex align-items-center justify-content-center bg-white border hover:bg-slate-50 transition-colors" aria-label="Next page" style="width: 40px; height: 40px; border-radius: var(--radius-md);">
+              <span style="width: 20px; height: 20px;">{% render 'icon-chevron-right' %}</span>
+            </a>
+          </li>
+        {%- endif -%}
+        
+      </ul>
+    </nav>
+  </div>
+{%- endif -%}

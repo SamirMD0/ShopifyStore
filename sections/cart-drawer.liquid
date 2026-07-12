@@ -1,0 +1,145 @@
+<div id="cart-drawer" class="cart-drawer">
+  <div class="cart-drawer-inner h-full d-flex flex-column bg-white">
+    <!-- Header -->
+    <div class="cart-drawer-header d-flex justify-content-between align-items-center p-4 border-bottom">
+      <h2 class="text-xl font-bold m-0 d-flex align-items-center gap-2">
+        Your Cart
+        <span class="cart-count-badge bg-primary text-white text-xs rounded-full d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;" data-cart-count>
+          {{ cart.item_count }}
+        </span>
+      </h2>
+      <button class="drawer-close-btn bg-transparent border-0 cursor-pointer text-secondary hover:text-primary" aria-label="Close cart" data-drawer-close>
+        <span style="width: 24px; height: 24px; display: block;">{% render 'icon-close' %}</span>
+      </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="cart-drawer-body flex-1 overflow-y-auto p-4" data-cart-items>
+      {%- if cart.item_count > 0 -%}
+        <div class="cart-items d-flex flex-column gap-6">
+          {%- for item in cart.items -%}
+            <div class="cart-item d-flex gap-4" data-line="{{ forloop.index }}">
+              <!-- Image -->
+              <a href="{{ item.url }}" class="cart-item-image flex-none rounded-sm overflow-hidden border" style="width: 80px; height: 80px;">
+                {%- if item.image -%}
+                  <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.title | escape }}" class="w-full h-full object-cover" loading="lazy">
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'w-full h-full bg-slate-100 object-cover' }}
+                {%- endif -%}
+              </a>
+
+              <!-- Details -->
+              <div class="cart-item-details flex-1 d-flex flex-column">
+                <div class="d-flex justify-content-between gap-2 mb-1">
+                  <a href="{{ item.url }}" class="font-medium text-primary hover:text-accent text-sm" style="text-decoration: none;">
+                    {{ item.product.title }}
+                  </a>
+                  <div class="text-sm font-bold text-primary">
+                    {{ item.final_line_price | money }}
+                  </div>
+                </div>
+
+                {%- unless item.product.has_only_default_variant -%}
+                  <div class="text-xs text-secondary mb-2">
+                    {{ item.variant.title }}
+                  </div>
+                {%- endunless -%}
+
+                <!-- Quantity & Remove -->
+                <div class="d-flex justify-content-between align-items-end mt-auto">
+                  <quantity-input class="quantity border rounded-sm d-flex overflow-hidden" style="border-color: var(--color-border); height: 32px; width: 100px;">
+                    <button class="quantity__button flex-none w-8 d-flex align-items-center justify-content-center bg-transparent border-0 cursor-pointer hover:bg-slate-50" name="minus" type="button" aria-label="Decrease quantity" data-line="{{ forloop.index }}">
+                      <span style="width: 12px; height: 12px;">{% render 'icon-minus' %}</span>
+                    </button>
+                    <input class="quantity__input flex-1 border-0 bg-transparent text-center font-medium m-0 p-0 text-sm"
+                        type="number"
+                        name="updates[]"
+                        value="{{ item.quantity }}"
+                        min="0"
+                        aria-label="Quantity"
+                        data-line="{{ forloop.index }}"
+                      >
+                    <button class="quantity__button flex-none w-8 d-flex align-items-center justify-content-center bg-transparent border-0 cursor-pointer hover:bg-slate-50" name="plus" type="button" aria-label="Increase quantity" data-line="{{ forloop.index }}">
+                      <span style="width: 12px; height: 12px;">{% render 'icon-plus' %}</span>
+                    </button>
+                  </quantity-input>
+                  
+                  <button type="button" class="cart-remove-btn text-xs text-secondary hover:text-error bg-transparent border-0 cursor-pointer" style="text-decoration: underline;" data-line="{{ forloop.index }}">
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="empty-cart h-full d-flex flex-column align-items-center justify-content-center text-center">
+          <span style="width: 48px; height: 48px; color: var(--color-border); margin-bottom: 1rem;">
+            {% render 'icon-cart' %}
+          </span>
+          <h3 class="text-lg font-bold text-primary mb-2">Your cart is empty</h3>
+          <p class="text-sm text-secondary mb-6">Looks like you haven't added any items yet.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary" data-drawer-close>
+            Start Shopping
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Footer -->
+    {%- if cart.item_count > 0 -%}
+      <div class="cart-drawer-footer p-4 border-top bg-slate-50" data-cart-footer>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <span class="font-bold text-primary text-lg">Subtotal</span>
+          <span class="font-bold text-primary text-xl" data-cart-subtotal>{{ cart.total_price | money }}</span>
+        </div>
+        
+        <p class="text-xs text-secondary mb-4 text-center">Taxes and shipping calculated at checkout</p>
+        
+        <form action="{{ routes.cart_url }}" method="post" id="cart-drawer-form">
+          <button type="submit" name="checkout" class="btn btn-primary btn-lg w-full font-bold d-flex justify-content-center align-items-center gap-2">
+            Proceed to Checkout
+          </button>
+        </form>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .cart-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    background-color: var(--color-bg-primary);
+    z-index: 100;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .cart-drawer.is-open {
+    transform: translateX(0);
+  }
+  
+  .cart-drawer-inner { height: 100%; }
+  .cart-drawer-body { overflow-y: auto; }
+  .bg-slate-50 { background-color: #f8fafc; }
+  .border-top { border-top: 1px solid var(--color-border); }
+  .border-bottom { border-bottom: 1px solid var(--color-border); }
+  
+  /* Loading Overlay */
+  .cart-drawer.is-loading .cart-drawer-body {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Cart Drawer"
+}
+{% endschema %}

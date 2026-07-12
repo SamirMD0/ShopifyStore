@@ -1,0 +1,16 @@
+{%- comment -%}
+  Usage:
+  {% render 'button', label: 'Shop now', url: '/collections/all', style: 'primary', class: 'custom-class' %}
+{%- endcomment -%}
+
+{%- assign button_style = style | default: 'primary' -%}
+{%- assign button_class = class | default: '' -%}
+
+<{{ button_tag | default: 'a' }}
+  href="{{ url | default: '#' }}"
+  class="button button--{{ button_style }} {{ button_class }}"
+  {% if onclick %}onclick="{{ onclick }}"{% endif %}
+  {% if disabled %}disabled{% endif %}
+>
+  {{ label }}
+</{{ button_tag | default: 'a' }}>

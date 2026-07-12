@@ -1,0 +1,94 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign on_sale = false -%}
+{%- if current_variant.compare_at_price > current_variant.price -%}
+  {%- assign on_sale = true -%}
+{%- endif -%}
+
+<div class="product-card">
+  <div class="product-card-image-wrapper">
+    <a href="{{ product.url | within: collection }}" class="d-block w-full h-full">
+      {%- if product.featured_media != blank -%}
+        <img srcset="
+            {%- if product.featured_media.width >= 165 -%}{{ product.featured_media | image_url: width: 165 }} 165w,{%- endif -%}
+            {%- if product.featured_media.width >= 360 -%}{{ product.featured_media | image_url: width: 360 }} 360w,{%- endif -%}
+            {%- if product.featured_media.width >= 533 -%}{{ product.featured_media | image_url: width: 533 }} 533w,{%- endif -%}
+            {%- if product.featured_media.width >= 720 -%}{{ product.featured_media | image_url: width: 720 }} 720w,{%- endif -%}
+            {{ product.featured_media | image_url }} {{ product.featured_media.width }}w"
+          src="{{ product.featured_media | image_url: width: 533 }}"
+          sizes="(min-width: 1200px) 267px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+          alt="{{ product.featured_media.alt | escape }}"
+          class="product-card-image"
+          loading="lazy"
+          width="{{ product.featured_media.width }}"
+          height="{{ product.featured_media.height }}"
+        >
+        {%- if product.media[1] != blank -%}
+          <img srcset="
+              {%- if product.media[1].width >= 165 -%}{{ product.media[1] | image_url: width: 165 }} 165w,{%- endif -%}
+              {%- if product.media[1].width >= 360 -%}{{ product.media[1] | image_url: width: 360 }} 360w,{%- endif -%}
+              {%- if product.media[1].width >= 533 -%}{{ product.media[1] | image_url: width: 533 }} 533w,{%- endif -%}
+              {%- if product.media[1].width >= 720 -%}{{ product.media[1] | image_url: width: 720 }} 720w,{%- endif -%}
+              {{ product.media[1] | image_url }} {{ product.media[1].width }}w"
+            src="{{ product.media[1] | image_url: width: 533 }}"
+            sizes="(min-width: 1200px) 267px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+            alt="{{ product.media[1].alt | escape }}"
+            class="product-card-image-secondary"
+            loading="lazy"
+            width="{{ product.media[1].width }}"
+            height="{{ product.media[1].height }}"
+          >
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'product-card-image bg-slate-200' }}
+      {%- endif -%}
+    </a>
+
+    <div class="product-card-badges">
+      {%- if product.available == false -%}
+        <span class="badge badge-soldout">Sold Out</span>
+      {%- elsif on_sale -%}
+        <span class="badge badge-sale">Sale</span>
+      {%- endif -%}
+      {%- if product.tags contains 'New' or product.tags contains 'new' -%}
+        <span class="badge badge-new">New</span>
+      {%- endif -%}
+    </div>
+
+    <div class="product-card-actions">
+      {%- if product.available -%}
+        <form method="post" action="/cart/add" class="w-full">
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+          <button type="button" class="product-card-action-btn wide js-quick-add" aria-label="Add to cart">
+            Quick Add
+          </button>
+        </form>
+      {%- else -%}
+        <button class="product-card-action-btn wide disabled" disabled>Sold Out</button>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="product-card-info">
+    {%- if settings.show_vendor -%}
+      <div class="product-card-vendor">{{ product.vendor }}</div>
+    {%- endif -%}
+    
+    <a href="{{ product.url | within: collection }}" class="product-card-title text-primary hover:text-accent">
+      {{ product.title }}
+    </a>
+    
+    <!-- Shopify Reviews Integration placeholder -->
+    <div class="product-card-rating mb-2">
+      <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+    </div>
+
+    <div class="product-card-price">
+      {%- if on_sale -%}
+        <span class="product-card-price-sale">{{ current_variant.price | money }}</span>
+        <span class="product-card-price-compare">{{ current_variant.compare_at_price | money }}</span>
+      {%- else -%}
+        <span class="product-card-price-regular">{{ current_variant.price | money }}</span>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

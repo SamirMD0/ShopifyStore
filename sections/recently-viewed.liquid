@@ -1,0 +1,36 @@
+<div class="recently-viewed" data-section-id="{{ section.id }}" data-section-type="recently-viewed">
+  {% if section.settings.heading %}
+    <h2 class="recently-viewed__heading">{{ section.settings.heading | escape }}</h2>
+  {% endif %}
+
+  <div class="recently-viewed__items" data-recently-viewed-products>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Recently viewed",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Recently viewed"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently viewed"
+    }
+  ]
+}
+{% endschema %}

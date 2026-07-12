@@ -1,0 +1,55 @@
+{%- if predictive_search.performed -%}
+  <div id="predictive-search-results" class="predictive-search-results glass-card overflow-hidden">
+    {%- if predictive_search.resources.products.size > 0 -%}
+      <h3 id="predictive-search-products" class="predictive-search-heading text-xs font-semibold uppercase text-secondary px-4 pt-4 pb-2 m-0" style="letter-spacing: 0.05em;">
+        Products
+      </h3>
+      <ul id="predictive-search-results-list" class="predictive-search-list m-0 p-0" role="listbox" aria-labelledby="predictive-search-products" style="list-style: none;">
+        {%- for product in predictive_search.resources.products -%}
+          <li id="predictive-search-option-{{ forloop.index }}" class="predictive-search-item" role="option" aria-selected="false">
+            <a href="{{ product.url }}" class="predictive-search-link d-flex align-items-center gap-3 p-3 hover:bg-slate-50 transition-colors" style="text-decoration: none;">
+              {%- if product.featured_media != blank -%}
+                <img class="predictive-search-image rounded-sm"
+                  src="{{ product.featured_media | image_url: width: 50, height: 50, crop: 'center' }}"
+                  alt="{{ product.featured_media.alt }}"
+                  width="50"
+                  height="50"
+                  loading="lazy"
+                  style="object-fit: cover; background: #f1f5f9;"
+                >
+              {%- else -%}
+                <div style="width: 50px; height: 50px; background: #f1f5f9; border-radius: 4px;"></div>
+              {%- endif -%}
+              
+              <div class="predictive-search-info flex-1 min-w-0">
+                <span class="predictive-search-title d-block text-sm font-medium text-primary truncate">{{ product.title }}</span>
+                <span class="predictive-search-price d-block text-xs text-secondary mt-1">
+                  {%- if product.compare_at_price_min > product.price_min -%}
+                    <span style="text-decoration: line-through; margin-right: 4px;">{{ product.compare_at_price_min | money }}</span>
+                    <span class="text-error">{{ product.price_min | money }}</span>
+                  {%- else -%}
+                    {{ product.price_min | money }}
+                  {%- endif -%}
+                </span>
+              </div>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    <div class="predictive-search-action bg-slate-50 border-top p-3 text-center">
+      <button class="btn btn-ghost btn-sm w-full font-medium" tabindex="-1">
+        Search for "{{ predictive_search.terms }}"
+      </button>
+    </div>
+  </div>
+
+  <style>
+    .predictive-search-results { max-height: 400px; overflow-y: auto; }
+    .predictive-search-link:hover { background-color: rgba(0,0,0,0.02); }
+    .rounded-sm { border-radius: var(--radius-sm); }
+    .bg-slate-50 { background-color: #f8fafc; }
+    .border-top { border-top: 1px solid var(--color-border); }
+  </style>
+{%- endif -%}

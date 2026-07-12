@@ -1,0 +1,42 @@
+<nav class="breadcrumbs" role="navigation" aria-label="{{ 'accessibility.breadcrumbs' | t }}">
+  <ol class="breadcrumbs__list">
+    <li class="breadcrumbs__item">
+      <a href="{{ routes.root_url }}" class="breadcrumbs__link">{{ 'general.home' | t }}</a>
+    </li>
+
+    {%- if template contains 'product' -%}
+      {%- if collection -%}
+        <li class="breadcrumbs__item">
+          <a href="{{ collection.url }}" class="breadcrumbs__link">{{ collection.title }}</a>
+        </li>
+      {%- endif -%}
+      <li class="breadcrumbs__item">
+        <span class="breadcrumbs__current">{{ product.title }}</span>
+      </li>
+
+    {%- elsif template contains 'collection' -%}
+      <li class="breadcrumbs__item">
+        <span class="breadcrumbs__current">{{ collection.title }}</span>
+      </li>
+
+    {%- elsif template contains 'blog' -%}
+      <li class="breadcrumbs__item">
+        <span class="breadcrumbs__current">{{ blog.title }}</span>
+      </li>
+
+    {%- elsif template contains 'article' -%}
+      <li class="breadcrumbs__item">
+        <a href="{{ blog.url }}" class="breadcrumbs__link">{{ blog.title }}</a>
+      </li>
+      <li class="breadcrumbs__item">
+        <span class="breadcrumbs__current">{{ article.title }}</span>
+      </li>
+
+    {%- elsif template contains 'page' -%}
+      <li class="breadcrumbs__item">
+        <span class="breadcrumbs__current">{{ page.title }}</span>
+      </li>
+
+    {%- endif -%}
+  </ol>
+</nav>

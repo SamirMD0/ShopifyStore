@@ -1,0 +1,147 @@
+<footer class="footer-section">
+  <div class="container">
+    <div class="footer-grid">
+      <!-- Column 1: About / Logo -->
+      <div class="footer-column">
+        <h3 class="footer-heading text-2xl mb-4">
+          {%- if section.settings.logo != blank -%}
+            <img src="{{ section.settings.logo | image_url: width: 150 }}" alt="{{ shop.name }}" width="150" height="auto" loading="lazy">
+          {%- else -%}
+            {{ shop.name }}
+          {%- endif -%}
+        </h3>
+        <div class="footer-text text-sm mb-6" style="color: #94a3b8; max-width: 300px;">
+          {{ section.settings.about_text }}
+        </div>
+        
+        {%- if section.settings.show_social_icons -%}
+          <div class="social-icons">
+            {%- if settings.social_facebook_link != blank -%}
+              <a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener" aria-label="Facebook">{% render 'icon-facebook' %}</a>
+            {%- endif -%}
+            {%- if settings.social_twitter_link != blank -%}
+              <a href="{{ settings.social_twitter_link }}" target="_blank" rel="noopener" aria-label="Twitter">{% render 'icon-twitter' %}</a>
+            {%- endif -%}
+            {%- if settings.social_instagram_link != blank -%}
+              <a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" aria-label="Instagram">{% render 'icon-instagram' %}</a>
+            {%- endif -%}
+            {%- if settings.social_youtube_link != blank -%}
+              <a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener" aria-label="YouTube">{% render 'icon-youtube' %}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div class="footer-column">
+        <h4 class="footer-heading">{{ section.settings.linklist_1_title }}</h4>
+        <ul class="footer-links text-sm">
+          {%- for link in linklists[section.settings.linklist_1].links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <!-- Column 3: Customer Service -->
+      <div class="footer-column">
+        <h4 class="footer-heading">{{ section.settings.linklist_2_title }}</h4>
+        <ul class="footer-links text-sm">
+          {%- for link in linklists[section.settings.linklist_2].links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+
+      <!-- Column 4: Newsletter -->
+      <div class="footer-column">
+        <h4 class="footer-heading">Newsletter</h4>
+        <p class="text-sm mb-4" style="color: #94a3b8;">Subscribe to receive updates, access to exclusive deals, and more.</p>
+        
+        {%- form 'customer', id: 'FooterNewsletter', class: 'footer-newsletter-form d-flex gap-2' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input 
+            type="email" 
+            name="contact[email]" 
+            class="input-field flex-1" 
+            style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff;"
+            value="{{ form.email }}" 
+            aria-required="true" 
+            autocorrect="off" 
+            autocapitalize="off" 
+            autocomplete="email" 
+            {% if form.errors %}
+              autofocus
+              aria-invalid="true"
+              aria-describedby="FooterNewsletter-error"
+            {% endif %}
+            placeholder="Enter your email" 
+            required
+          >
+          <button type="submit" class="btn btn-primary" name="commit">Subscribe</button>
+        {%- endform -%}
+      </div>
+    </div>
+
+    <!-- Bottom Bar: Copyright & Payments -->
+    <div class="footer-bottom">
+      <div class="copyright text-xs" style="color: #64748b;">
+        &copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. All rights reserved.
+      </div>
+      
+      <div class="payment-methods d-flex gap-2">
+        {%- for type in shop.enabled_payment_types -%}
+          <span class="payment-icon" style="opacity: 0.7;">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</span>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "textarea",
+      "id": "about_text",
+      "label": "About text",
+      "default": "Your trusted store for premium electronics and accessories."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_icons",
+      "label": "Show social icons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "linklist_1_title",
+      "label": "Menu 1 Title",
+      "default": "Quick Links"
+    },
+    {
+      "type": "link_list",
+      "id": "linklist_1",
+      "label": "Menu 1",
+      "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "linklist_2_title",
+      "label": "Menu 2 Title",
+      "default": "Customer Service"
+    },
+    {
+      "type": "link_list",
+      "id": "linklist_2",
+      "label": "Menu 2",
+      "default": "footer"
+    }
+  ]
+}
+{% endschema %}

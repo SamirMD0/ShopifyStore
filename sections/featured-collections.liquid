@@ -1,0 +1,102 @@
+<div class="featured-collections-section container py-8">
+  <div class="section-header">
+    <div class="section-title-wrapper">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="section-eyebrow">{{ section.settings.eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+    </div>
+    {%- if section.settings.show_view_all -%}
+      <div class="section-action">
+        <a href="{{ routes.collections_url }}" class="btn btn-outline btn-sm">View All Categories</a>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="d-grid gap-4 grid-cols-2" style="@media(min-width: 768px) { grid-template-columns: repeat(3, 1fr) !important; } @media(min-width: 1024px) { grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr) !important; }">
+    {%- for block in section.blocks -%}
+      {%- assign collection = collections[block.settings.collection] -%}
+      <a href="{% if collection == empty %}#{% else %}{{ collection.url }}{% endif %}" class="collection-card" {{ block.shopify_attributes }}>
+        {%- if collection != empty and collection.image != blank -%}
+          <img src="{{ collection.image | image_url: width: 600 }}" class="collection-card-image" alt="{{ collection.title | escape }}" loading="lazy">
+        {%- elsif collection != empty and collection.products.first.featured_image != blank -%}
+          <img src="{{ collection.products.first.featured_image | image_url: width: 600 }}" class="collection-card-image" alt="{{ collection.title | escape }}" loading="lazy">
+        {%- else -%}
+          {{ 'collection-1' | placeholder_svg_tag: 'collection-card-image bg-slate-200' }}
+        {%- endif -%}
+        
+        <div class="collection-card-overlay">
+          <h3 class="collection-card-title">{%- if collection != empty -%}{{ collection.title }}{%- else -%}Example Collection{%- endif -%}</h3>
+          {%- if section.settings.show_product_count -%}
+            <span class="collection-card-count">{%- if collection != empty -%}{{ collection.all_products_count }} Products{%- else -%}10 Products{%- endif -%}</span>
+          {%- endif -%}
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Browse Categories"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "default": true,
+      "label": "Show product count"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show 'View all' button"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collections",
+      "blocks": [
+        { "type": "collection" },
+        { "type": "collection" },
+        { "type": "collection" },
+        { "type": "collection" }
+      ]
+    }
+  ]
+}
+{% endschema %}

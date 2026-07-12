@@ -1,0 +1,173 @@
+{
+  "general": {
+    "home": "Home",
+    "404": {
+      "title": "Page not found",
+      "back": "Back to home"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "close": "Close",
+    "search": "Search",
+    "cart": "Cart",
+    "menu": "Menu",
+    "loading": "Loading",
+    "quantity": "Quantity",
+    "decrease_quantity": "Decrease quantity",
+    "increase_quantity": "Increase quantity",
+    "breadcrumbs": "Breadcrumbs",
+    "pagination": "Pagination",
+    "star_reviews": "{{ rating }} out of 5 stars",
+    "social_facebook": "Facebook",
+    "social_twitter": "Twitter",
+    "social_instagram": "Instagram",
+    "social_youtube": "YouTube",
+    "social_tiktok": "TikTok",
+    "social_pinterest": "Pinterest"
+  },
+  "products": {
+    "product": {
+      "on_sale": "Sale",
+      "sold_out": "Sold out",
+      "from": "From",
+      "add_to_cart": "Add to cart",
+      "description": "Description",
+      "details": "Details"
+    }
+  },
+  "collections": {
+    "general": {
+      "items": "items"
+    },
+    "empty": "This collection is empty",
+    "sorting": {
+      "title": "Sort by",
+      "featured": "Featured",
+      "best_selling": "Best selling",
+      "title_ascending": "Alphabetically, A-Z",
+      "title_descending": "Alphabetically, Z-A",
+      "price_ascending": "Price, low to high",
+      "price_descending": "Price, high to low",
+      "created_ascending": "Date, old to new",
+      "created_descending": "Date, new to old"
+    },
+    "filters": {
+      "apply": "Apply",
+      "clear": "Clear all",
+      "from": "From",
+      "to": "To"
+    }
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "total": "Total",
+    "checkout": "Checkout",
+    "notes": "Order notes"
+  },
+  "search": {
+    "placeholder": "Search our store",
+    "submit": "Search",
+    "results": "Search results",
+    "no_results": "No results found"
+  },
+  "customer": {
+    "account": {
+      "title": "Account",
+      "details": "Account details",
+      "view_addresses": "View addresses",
+      "return": "Return to account"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "add_new": "Add new address",
+      "default": "Default",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "orders": {
+      "title": "Order history",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment",
+      "fulfillment_status": "Fulfillment",
+      "total": "Total",
+      "none": "No orders yet",
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Qty"
+    },
+    "login": {
+      "title": "Sign in",
+      "email": "Email",
+      "password": "Password",
+      "sign_in": "Sign in",
+      "forgot_password": "Forgot password?",
+      "create_account": "Create account"
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create",
+      "sign_in": "Already have an account? Sign in"
+    },
+    "activate_account": {
+      "title": "Activate account",
+      "subtext": "Create your password to activate your account.",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Activate",
+      "cancel": "Decline invitation"
+    },
+    "reset_password": {
+      "title": "Reset password",
+      "subtext": "Enter a new password for your account.",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Reset password"
+    }
+  },
+  "newsletter": {
+    "placeholder": "Enter your email",
+    "submit": "Subscribe",
+    "success": "Thanks for subscribing!",
+    "label": "Newsletter"
+  },
+  "contact": {
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Send",
+      "success": "Thanks for contacting us!"
+    }
+  },
+  "blogs": {
+    "comments": {
+      "title": "Comments",
+      "form_title": "Leave a comment",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Post comment",
+      "success": "Thanks for your comment!"
+    }
+  },
+  "sections": {
+    "announcement_bar": {
+      "label": "Announcement"
+    }
+  },
+  "gift_cards": {
+    "title": "Gift card"
+  }
+}

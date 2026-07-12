@@ -1,0 +1,21 @@
+<div class="collection-sorting d-flex align-items-center gap-3">
+  <label for="SortBy" class="text-sm font-medium text-secondary m-0 hidden-mobile">Sort by:</label>
+  <div class="select-wrapper relative">
+    <select name="sort_by" id="SortBy" class="input-field cursor-pointer text-sm font-medium" style="padding-right: 2.5rem; background-color: transparent; border-color: var(--color-border);" form="CollectionFiltersForm" onchange="document.getElementById('CollectionFiltersForm').submit();">
+      {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+      {%- for option in collection.sort_options -%}
+        <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+          {{ option.name }}
+        </option>
+      {%- endfor -%}
+    </select>
+    <span class="absolute top-1/2 right-3 pointer-events-none" style="transform: translateY(-50%); width: 16px; height: 16px; color: var(--color-text-secondary);">
+      {% render 'icon-chevron-down' %}
+    </span>
+  </div>
+</div>
+
+<style>
+  .select-wrapper select { appearance: none; -webkit-appearance: none; }
+  .pointer-events-none { pointer-events: none; }
+</style>

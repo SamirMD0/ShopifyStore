@@ -1,0 +1,125 @@
+<div class="customer order container py-16">
+  <div class="mb-8">
+    <a href="{{ routes.account_url }}" class="text-secondary hover:text-accent font-medium text-sm d-inline-flex align-items-center gap-2 mb-4" style="text-decoration: none;">
+      <span style="width: 16px; height: 16px;">{% render 'icon-chevron-left' %}</span>
+      {{ 'customer.account.return' | t | default: "Return to Account details" }}
+    </a>
+    
+    <div class="d-flex justify-content-between align-items-end border-bottom pb-4">
+      <div>
+        <h1 class="text-3xl font-bold text-primary m-0 mb-2">{{ 'customer.order.title' | t: name: order.name | default: "Order" }} {{ order.name }}</h1>
+        <p class="text-sm text-secondary m-0">{{ 'customer.order.date' | t: date: order.created_at | time_tag: format: 'date_at_time' | default: order.created_at | time_tag: format: 'date_at_time' }}</p>
+      </div>
+      <div class="d-flex gap-2">
+        <span class="badge bg-slate-100 text-secondary">{{ order.financial_status_label }}</span>
+        <span class="badge {% if order.fulfillment_status_label == 'Fulfilled' %}bg-primary text-white{% else %}bg-slate-100 text-secondary{% endif %}">{{ order.fulfillment_status_label }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex flex-column lg:flex-row gap-12" style="@media(min-width: 1024px) { flex-direction: row; }">
+    
+    <!-- Order Items -->
+    <div class="order-details flex-1 lg:w-2/3" style="@media(min-width: 1024px) { width: 66.666%; }">
+      <div class="border rounded-md overflow-hidden bg-white mb-8">
+        <table class="w-full text-left" style="border-collapse: collapse;">
+          <thead class="bg-slate-50 border-bottom text-sm text-secondary uppercase tracking-wider hidden-mobile">
+            <tr>
+              <th class="p-4 font-medium">{{ 'customer.order.product' | t | default: "Product" }}</th>
+              <th class="p-4 font-medium">{{ 'customer.order.sku' | t | default: "SKU" }}</th>
+              <th class="p-4 font-medium text-right">{{ 'customer.order.price' | t | default: "Price" }}</th>
+              <th class="p-4 font-medium text-center">{{ 'customer.order.quantity' | t | default: "Quantity" }}</th>
+              <th class="p-4 font-medium text-right">{{ 'customer.order.total' | t | default: "Total" }}</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm">
+            {%- for line_item in order.line_items -%}
+              <tr class="border-bottom last:border-0">
+                <td class="p-4">
+                  <div class="d-flex align-items-center gap-4">
+                    {%- if line_item.image -%}
+                      <div class="flex-none border rounded-sm overflow-hidden" style="width: 60px; height: 60px;">
+                        <img src="{{ line_item.image | image_url: width: 120 }}" alt="{{ line_item.title | escape }}" class="w-full h-full object-cover">
+                      </div>
+                    {%- endif -%}
+                    <div>
+                      <a href="{{ line_item.product.url }}" class="font-bold text-primary hover:text-accent d-block mb-1" style="text-decoration: none;">
+                        {{ line_item.product.title }}
+                      </a>
+                      {%- unless line_item.product.has_only_default_variant -%}
+                        <span class="text-xs text-secondary">{{ line_item.variant.title }}</span>
+                      {%- endunless -%}
+                    </div>
+                  </div>
+                </td>
+                <td class="p-4 text-secondary hidden-mobile">{{ line_item.sku }}</td>
+                <td class="p-4 text-right hidden-mobile">{{ line_item.final_price | money }}</td>
+                <td class="p-4 text-center hidden-mobile">{{ line_item.quantity }}</td>
+                <td class="p-4 text-right font-bold text-primary">{{ line_item.final_line_price | money }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+          <tfoot class="bg-slate-50 border-top text-sm">
+            <tr>
+              <td colspan="4" class="p-4 text-right text-secondary hidden-mobile">{{ 'customer.order.subtotal' | t | default: "Subtotal" }}</td>
+              <td class="p-4 text-right font-medium">{{ order.line_items_subtotal_price | money }}</td>
+            </tr>
+            {%- for shipping_method in order.shipping_methods -%}
+              <tr>
+                <td colspan="4" class="p-4 text-right text-secondary hidden-mobile">{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})</td>
+                <td class="p-4 text-right font-medium">{{ shipping_method.price | money }}</td>
+              </tr>
+            {%- endfor -%}
+            {%- for tax_line in order.tax_lines -%}
+              <tr>
+                <td colspan="4" class="p-4 text-right text-secondary hidden-mobile">{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)</td>
+                <td class="p-4 text-right font-medium">{{ tax_line.price | money }}</td>
+              </tr>
+            {%- endfor -%}
+            <tr class="border-top">
+              <td colspan="4" class="p-4 text-right font-bold text-primary text-base hidden-mobile">{{ 'customer.order.total' | t | default: "Total" }}</td>
+              <td class="p-4 text-right font-bold text-primary text-lg">{{ order.total_price | money }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Order Addresses -->
+    <div class="order-addresses flex-none lg:w-1/3" style="@media(min-width: 1024px) { width: 33.333%; }">
+      <div class="bg-white border rounded-md p-6 shadow-sm mb-6">
+        <h2 class="font-bold text-primary mb-4 border-bottom pb-2">{{ 'customer.order.billing_address' | t | default: "Billing Address" }}</h2>
+        <p class="text-sm font-medium text-secondary mb-2">
+          {{ 'customer.order.payment_status' | t | default: "Payment Status" }}: <span class="text-primary">{{ order.financial_status_label }}</span>
+        </p>
+        <div class="text-secondary text-sm">
+          {{ order.billing_address | format_address }}
+        </div>
+      </div>
+
+      <div class="bg-white border rounded-md p-6 shadow-sm">
+        <h2 class="font-bold text-primary mb-4 border-bottom pb-2">{{ 'customer.order.shipping_address' | t | default: "Shipping Address" }}</h2>
+        <p class="text-sm font-medium text-secondary mb-2">
+          {{ 'customer.order.fulfillment_status' | t | default: "Fulfillment Status" }}: <span class="text-primary">{{ order.fulfillment_status_label }}</span>
+        </p>
+        <div class="text-secondary text-sm">
+          {{ order.shipping_address | format_address }}
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<style>
+  .tracking-wider { letter-spacing: 0.05em; }
+  .bg-slate-50 { background-color: #f8fafc; }
+  .bg-slate-100 { background-color: #f1f5f9; }
+</style>
+
+{% schema %}
+{
+  "name": "Order",
+  "settings": []
+}
+{% endschema %}
