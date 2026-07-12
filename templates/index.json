@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -9,6 +18,12 @@
     "features": {
       "type": "service-features",
       "settings": {}
+    },
+    "brands": {
+      "type": "brand-showcase",
+      "settings": {
+        "title": "Trusted by top brands"
+      }
     },
     "categories": {
       "type": "featured-collections",
@@ -25,6 +40,7 @@
       "settings": {
         "eyebrow": "New Arrivals",
         "title": "Featured Products",
+        "collection": "",
         "product_limit": 8,
         "columns_desktop": 4,
         "show_view_all": true
@@ -38,29 +54,6 @@
         "columns_desktop": 4
       }
     },
-    "brands": {
-      "type": "brand-showcase",
-      "settings": {
-        "title": "Trusted by top brands"
-      }
-    },
-    "promo": {
-      "type": "countdown-promo",
-      "settings": {
-        "eyebrow": "Limited Time Offer",
-        "title": "Flash Sale Event",
-        "text": "Get up to 50% off on selected items before the timer runs out!",
-        "end_date": "2026-12-31 23:59:59",
-        "button_label": "Shop Sale"
-      }
-    },
-    "testimonials": {
-      "type": "testimonials",
-      "settings": {
-        "eyebrow": "Testimonials",
-        "title": "What Our Customers Say"
-      }
-    },
     "newsletter": {
       "type": "newsletter",
       "settings": {
@@ -72,12 +65,10 @@
   "order": [
     "hero",
     "features",
+    "brands",
     "categories",
     "featured_products",
     "best_sellers",
-    "brands",
-    "promo",
-    "testimonials",
     "newsletter"
   ]
 }
