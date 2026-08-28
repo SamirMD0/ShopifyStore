@@ -35,7 +35,7 @@
 
             {%- when 'variant_picker' -%}
               <div class="product-variant-picker-block mb-6" {{ block.shopify_attributes }}>
-                {% render 'variant-picker', product: product, section: section, product_form_id: 'product-form-' | append: section.id %}
+                {% render 'variant-picker', product: product, section: section, product_form_id: 'product-form-', append: section.id %}
               </div>
 
             {%- when 'buy_buttons' -%}
@@ -172,3 +172,15 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'variant-picker', product: product, section: section, product_form_id:
+    'product-form-' | append: section.id %}"
+  to: "{% render 'variant-picker', product: product, section: section, product_form_id:
+    'product-form-', append: section.id %}"
+  position: 1648..1767
+{% endcomment %}

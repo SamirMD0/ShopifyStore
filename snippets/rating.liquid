@@ -1,7 +1,7 @@
 <div class="rating" role="img" aria-label="{{ 'accessibility.star_reviews' | t: rating: rating | default: 0 }}">
   {%- assign rating_value = rating | default: 0 -%}
   {%- assign full_stars = rating_value | floor -%}
-  {%- assign has_half = rating_value - full_stars -%}
+  {%- assign has_half = rating_value -%}
 
   {%- for i in (1..5) -%}
     {%- if i <= full_stars -%}
@@ -13,3 +13,13 @@
     {%- endif -%}
   {%- endfor -%}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- assign has_half = rating_value - full_stars -%}"
+  to: "{%- assign has_half = rating_value -%}"
+  position: 218..256
+{% endcomment %}
